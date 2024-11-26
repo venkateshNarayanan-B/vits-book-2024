@@ -79,9 +79,21 @@
                 { "data": "layout_name" },
                 { "data": "layout_file" },
                 { 
-                    "data": "actions",
+                    "data": "id",
                     "orderable": false,
-                    "searchable": false
+                    "render": function(data) {
+                        return `
+                            <a href="<?= base_url('cms/widgets/') ?>${data}" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-th"></i> Assign Widgets
+                            </a>
+                            <a href="<?= base_url('cms/layouts/edit/') ?>${data}/<?= $theme['id'] ?>" class="btn btn-info btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${data}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        `;
+                    }
                 }
             ]
         });

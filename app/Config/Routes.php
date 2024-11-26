@@ -244,6 +244,18 @@ $routes->group('cms/layouts', ['filter' => 'auth'], function ($routes) {
     $routes->get('delete/(:num)/(:num)', 'LayoutController::delete/$1/$2'); // Delete layout
 });
 
+//CMS widget routes
+$routes->group('cms/widgets', ['filter' => 'auth'], function ($routes) {
+    $routes->get('(:num)', 'WidgetPlacementController::index/$1');
+    $routes->post('fetch/(:num)', 'WidgetPlacementController::fetch/$1');
+    $routes->get('create/(:num)', 'WidgetPlacementController::create/$1');
+    $routes->post('store/(:num)', 'WidgetPlacementController::store/$1');
+    $routes->get('edit/(:num)/(:num)', 'WidgetPlacementController::edit/$1/$2');
+    $routes->post('update/(:num)/(:num)', 'WidgetPlacementController::update/$1/$2');
+    $routes->get('delete/(:num)/(:num)', 'WidgetPlacementController::delete/$1/$2');
+});
+
+
 
 
 
