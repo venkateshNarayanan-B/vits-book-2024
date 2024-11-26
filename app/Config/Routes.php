@@ -233,6 +233,18 @@ $routes->group('cms/themes', ['filter' => 'auth'], function ($routes) {
     $routes->get('delete/(:num)', 'ThemeController::delete/$1'); // Delete theme
 });
 
+//CMS layout routes
+$routes->group('cms/layouts', ['filter' => 'auth'], function ($routes) {
+    $routes->get('(:num)', 'LayoutController::index/$1'); // List layouts for a theme
+    $routes->post('fetch/(:num)', 'LayoutController::fetchLayouts/$1'); // Fetch layouts for DataTable
+    $routes->get('create/(:num)', 'LayoutController::create/$1'); // Add layout form
+    $routes->post('store/(:num)', 'LayoutController::store/$1'); // Save layout
+    $routes->get('edit/(:num)/(:num)', 'LayoutController::edit/$1/$2'); // Edit layout
+    $routes->post('update/(:num)/(:num)', 'LayoutController::update/$1/$2'); // Update layout
+    $routes->get('delete/(:num)/(:num)', 'LayoutController::delete/$1/$2'); // Delete layout
+});
+
+
 
 
 
