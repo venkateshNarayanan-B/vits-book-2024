@@ -33,9 +33,9 @@ class ThemeController extends BaseController
 
             foreach ($themes as $theme) {
                 $data[] = [
-                    'id' => $theme['id'], // Key must match DataTable's column configuration
-                    'theme_name' => $theme['theme_name'], // Key must match DataTable's column configuration
-                    'directory' => $theme['directory'], // Key must match DataTable's column configuration
+                    'id' => $theme['id'],
+                    'theme_name' => $theme['theme_name'],
+                    'directory' => $theme['directory'],
                     'actions' => '<a href="/cms/themes/edit/' . $theme['id'] . '" class="btn btn-info btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -51,11 +51,10 @@ class ThemeController extends BaseController
         }
     }
 
-
     // Add Theme (Form Page)
     public function create()
     {
-        $menu = "cms"; // Indicates the module in the sidebar
+        $menu = "cms"; 
         $title = "Add Theme";
         $page_title = "Add Theme";
 
@@ -66,7 +65,6 @@ class ThemeController extends BaseController
     public function store()
     {
         try {
-            // Validation Rules
             if (!$this->validate([
                 'theme_name' => 'required',
                 'directory'  => 'required|alpha_dash',
@@ -74,7 +72,6 @@ class ThemeController extends BaseController
                 return redirect()->back()->withInput()->with('swal_error', 'Validation errors occurred. Please check your input.');
             }
 
-            // Save Data
             $this->themeModel->save([
                 'theme_name' => $this->request->getPost('theme_name'),
                 'directory'  => $this->request->getPost('directory'),
@@ -86,16 +83,50 @@ class ThemeController extends BaseController
         }
     }
 
-    // Edit Theme (Placeholder for Future Implementation)
+    // Edit Theme
     public function edit($id)
     {
-        return redirect()->back()->with('swal_error', 'Edit functionality is not yet implemented.');
+        try {
+            $theme = $this->themeModel->find($id);
+            if (!$theme) {
+                throw new \Exception("Theme not found.");
+            }
+
+            $menu = "cms"; 
+            $title = "Edit Theme";
+            $page_title = "Edit Theme";
+
+            return view('backend/cms/themes/edit', compact('menu', 'theme', 'title', 'page_title'));
+        } catch (\Exception $e) {
+            return redirect()->to('/cms/themes')->with('swal_error', $e->getMessage());
+        }
     }
 
-    // Update Theme (Placeholder for Future Implementation)
+    // Update Theme
     public function update($id)
     {
-        return redirect()->back()->with('swal_error', 'Update functionality is not yet implemented.');
+        try {
+            $theme = $this->themeModel->find($id);
+            if (!$theme) {
+                throw new \Exception("Theme not found.");
+            }
+
+            if (!$this->validate([
+                'theme_name' => 'required',
+                'directory'  => 'required|alpha_dash',
+            ])) {
+                return redirect()->back()->withInput()->with('swal_error', 'Validation errors occurred. Please check your input.');
+            }
+
+            $this->themeModel->update($id, [
+                'theme_name' => $this->request->getPost('theme_name'),
+                'directory'  => $this->request->getPost('directory'),
+            ]);
+
+            return redirect()->to('/cms/themes')->with('swal_success', 'Theme updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->to('/cms/themes')->with('swal_error', $e->getMessage());
+        }
     }
 
     // Delete Theme
