@@ -33,10 +33,15 @@ class ThemeController extends BaseController
 
             foreach ($themes as $theme) {
                 $data[] = [
-                    $theme['id'],
-                    $theme['theme_name'],
-                    $theme['directory'],
-                    '<a href="/cms/themes/delete/' . $theme['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure?\')">Delete</a>'
+                    'id' => $theme['id'], // Key must match DataTable's column configuration
+                    'theme_name' => $theme['theme_name'], // Key must match DataTable's column configuration
+                    'directory' => $theme['directory'], // Key must match DataTable's column configuration
+                    'actions' => '<a href="/cms/themes/edit/' . $theme['id'] . '" class="btn btn-info btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="/cms/themes/delete/' . $theme['id'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure?\')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>'
                 ];
             }
 
@@ -45,6 +50,7 @@ class ThemeController extends BaseController
             return $this->response->setJSON(['swal_error' => $e->getMessage()]);
         }
     }
+
 
     // Add Theme (Form Page)
     public function create()

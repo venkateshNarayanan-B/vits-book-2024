@@ -40,7 +40,7 @@
                     <table id="themesTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Id</th>
                                 <th>Theme Name</th>
                                 <th>Directory</th>
                                 <th>Actions</th>
