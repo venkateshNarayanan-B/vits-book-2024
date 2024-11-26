@@ -176,6 +176,12 @@
                   <p>Media</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<?= site_url("cms/themes") ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Themes</p>
+                </a>
+              </li>
             </ul>
           </li>
           <!--CMS section end-->
