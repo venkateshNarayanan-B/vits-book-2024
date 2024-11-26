@@ -225,7 +225,7 @@ $routes->group('cms/media-manager', ['namespace' => 'App\Controllers'], function
 //CMS theme routes
 $routes->group('cms/themes', ['filter' => 'auth'], function ($routes) {
     $routes->get('/', 'ThemeController::index'); // List all themes
-    $routes->get('fetch', 'ThemeController::fetchThemes'); // Fetch themes for DataTable
+    $routes->post('fetch', 'ThemeController::fetchThemes'); // Fetch themes for DataTable
     $routes->get('create', 'ThemeController::create'); // Add theme form
     $routes->post('store', 'ThemeController::store'); // Save theme
     $routes->get('edit/(:num)', 'ThemeController::edit/$1'); // Edit theme (future implementation)
