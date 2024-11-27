@@ -43,6 +43,7 @@
                                 <th>Id</th>
                                 <th>Theme Name</th>
                                 <th>Directory</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -78,22 +79,38 @@
                 { "data": "theme_name" },
                 { "data": "directory" },
                 { 
+                    "data": "is_active",
+                    "render": function(data) {
+                        return data ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Inactive</span>';
+                    }
+                },
+                { 
                     "data": "id",
                     "orderable": false,
-                    "render": function(data) {
-                        return `
+                    "render": function(data, type, row) {
+                        let actions = `
                             <a href="<?= base_url('cms/layouts/') ?>${data}" class="btn btn-secondary btn-sm">
                                 <i class="fas fa-layer-group"></i> Manage Layouts
                             </a>
                             <a href="<?= base_url('cms/themes/edit/') ?>${data}" class="btn btn-info btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${data}">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
                         `;
+                        if (row.is_active) {
+                            actions += `<button class="btn btn-success btn-sm" disabled>Active</button>`;
+                        } else {
+                            actions += `
+                                <a href="<?= base_url('cms/themes/activate/') ?>${data}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-check"></i> Activate
+                                </a>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${data}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            `;
+                        }
+                        return actions;
                     }
-                },
+                }
             ]
         });
 

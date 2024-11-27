@@ -231,6 +231,7 @@ $routes->group('cms/themes', ['filter' => 'auth'], function ($routes) {
     $routes->get('edit/(:num)', 'ThemeController::edit/$1'); // Edit theme (future implementation)
     $routes->post('update/(:num)', 'ThemeController::update/$1'); // Update theme (future implementation)
     $routes->get('delete/(:num)', 'ThemeController::delete/$1'); // Delete theme
+    $routes->get('activate/(:num)', 'ThemeController::activate/$1'); // activate theme
 });
 
 //CMS layout routes

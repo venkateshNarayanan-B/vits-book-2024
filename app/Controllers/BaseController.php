@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\ThemeModel;
 
 /**
  * Class BaseController
@@ -27,6 +28,9 @@ abstract class BaseController extends Controller
      * @var CLIRequest|IncomingRequest
      */
     protected $request;
+    // For CMS Themes
+    protected $activeTheme;
+    protected $themePath;
 
     /**
      * An array of helpers to be loaded automatically upon
@@ -35,7 +39,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = ['form','cookie','permission'];
+    protected $helpers = ['form','cookie','permission','theme'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -54,5 +58,22 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+        $this->loadActiveTheme(); // Load the active theme on every request
+    }
+
+    protected function loadActiveTheme()
+    {
+        $themeModel = new ThemeModel();
+        $this->activeTheme = $themeModel->where('is_active', 1)->first();
+
+        if ($this->activeTheme) {
+            $this->themePath = 'themes/' . $this->activeTheme['theme_name'] . '/';
+        } else {
+            // Fallback to default theme
+            $this->themePath = 'themes/default/';
+        }
+
+        // Use the view service to set variables globally
+        \Config\Services::renderer()->setVar('themePath', $this->themePath);
     }
 }

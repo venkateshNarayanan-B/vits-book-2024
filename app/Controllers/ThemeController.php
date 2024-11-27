@@ -36,6 +36,7 @@ class ThemeController extends BaseController
                     'id' => $theme['id'],
                     'theme_name' => $theme['theme_name'],
                     'directory' => $theme['directory'],
+                    'is_active' => $theme['is_active'],
                     'actions' => '<a href="/cms/themes/edit/' . $theme['id'] . '" class="btn btn-info btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -143,4 +144,21 @@ class ThemeController extends BaseController
             return redirect()->to('/cms/themes')->with('swal_error', $e->getMessage());
         }
     }
+
+    public function activate($id)
+    {
+        $themeModel = new ThemeModel();
+
+        // Deactivate all other themes
+        $themeModel->where('is_active', 1)->set(['is_active' => 0])->update();
+
+        // Activate the selected theme
+        $themeModel->update($id, ['is_active' => 1]);
+
+        session()->setFlashdata('swal_success', 'Theme activated successfully.');
+        return redirect()->to('/cms/themes');
+    }
+
+
+
 }

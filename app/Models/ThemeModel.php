@@ -12,7 +12,7 @@ class ThemeModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['theme_name', 'directory', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['theme_name', 'directory', 'is_active', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -39,4 +39,10 @@ class ThemeModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getActiveTheme()
+    {
+        return $this->where('is_active', 1)->first();
+    }
+
 }
