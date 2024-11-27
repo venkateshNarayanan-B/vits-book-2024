@@ -58,6 +58,7 @@
 <script src="<?= base_url("assets/plugins/datatables/jquery.dataTables.min.js") ?>"></script>
 <script src="<?= base_url("assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js") ?>"></script>
 <script src="<?= base_url("assets/plugins/datatables-responsive/js/dataTables.responsive.min.js") ?>"></script>
+<?php $widgetsConfig = new \Config\Widgets();  ?>
 <script>
     $(document).ready(function () {
         $('#widgetTable').DataTable({
@@ -70,7 +71,13 @@
             "columns": [
                 { "data": "id" },
                 { "data": "widget_name" },
-                { "data": "position" },
+                { 
+                    "data": "position",
+                    "render": function(data) {
+                        const positions = <?= json_encode($widgetsConfig->positions) ?>;
+                        return positions[data] ? positions[data].charAt(0).toUpperCase() + positions[data].slice(1) : 'Unknown';
+                    }
+                },
                 { "data": "actions", "orderable": false }
             ]
         });

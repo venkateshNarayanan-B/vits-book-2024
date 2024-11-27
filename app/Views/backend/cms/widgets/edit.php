@@ -29,7 +29,7 @@
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="widget_id">Select Widget</label>
-                            <select name="widget_id" id="widget_id" class="form-control">
+                            <select name="widget_id" id="widget_id" class="form-control select2">
                                 <?php foreach ($contentBlocks as $block): ?>
                                     <option value="<?= esc($block['id']) ?>" <?= $block['id'] == $placement['widget_id'] ? 'selected' : '' ?>>
                                         <?= esc($block['title']) ?>
@@ -37,10 +37,22 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <?php
+                        $widgetsConfig = new \Config\Widgets();
+                        $positions = $widgetsConfig->positions;
+                        ?>
+
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <input type="text" name="position" id="position" class="form-control" value="<?= esc($placement['position']) ?>">
+                            <select name="position" id="position" class="form-control select2">
+                                <?php foreach ($positions as $key => $name): ?>
+                                    <option value="<?= $key ?>" <?= $placement['position'] == $key ? 'selected' : '' ?>>
+                                        <?= ucfirst($name) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
+
                         <button type="submit" class="btn btn-success">Update Placement</button>
                         <a href="<?= base_url("cms/widgets/{$layoutId}") ?>" class="btn btn-secondary">Cancel</a>
                     </form>

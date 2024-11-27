@@ -26,6 +26,10 @@
                 </div>
                 <div class="card-body">
                     <form action="<?= base_url("cms/widgets/store/{$layoutId}") ?>" method="post">
+                    <?php 
+                    $widgetsConfig = new \Config\Widgets();
+                    $positions = $widgetsConfig->positions; 
+                    ?>
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="widget_id">Select Widget</label>
@@ -38,7 +42,11 @@
                         </div>
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <input type="text" name="position" id="position" class="form-control">
+                            <select name="position" id="position" class="form-control">
+                                <?php foreach ($positions as $key => $name): ?>
+                                    <option value="<?= $key ?>"><?= ucfirst($name) ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-success">Save Placement</button>
                         <a href="<?= base_url("cms/widgets/{$layoutId}") ?>" class="btn btn-secondary">Cancel</a>
