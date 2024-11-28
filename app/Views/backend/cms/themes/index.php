@@ -81,7 +81,7 @@
                 { 
                     "data": "is_active",
                     "render": function(data) {
-                        return data ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Inactive</span>';
+                        return data == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Inactive</span>';
                     }
                 },
                 { 
@@ -96,7 +96,7 @@
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                         `;
-                        if (row.is_active) {
+                        if (row.is_active == 1) {
                             actions += `<button class="btn btn-success btn-sm" disabled>Active</button>`;
                         } else {
                             actions += `

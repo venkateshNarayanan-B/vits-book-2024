@@ -5,10 +5,13 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Backend::login');
+$routes->get('/login', 'Backend::login');
 $routes->get('/admin', 'Backend::index', ['filter' => 'auth']);
 $routes->get('/dashboard', 'Backend::index', ['filter' => 'auth']);
 $routes->get('/chart', 'Backend::chart');
+
+
+
 
 //check sessions
 $routes->get('/sessions', 'Backend::debugSession');
@@ -254,6 +257,22 @@ $routes->group('cms/widgets', ['filter' => 'auth'], function ($routes) {
     $routes->get('edit/(:num)/(:num)', 'WidgetPlacementController::edit/$1/$2');
     $routes->post('update/(:num)/(:num)', 'WidgetPlacementController::update/$1/$2');
     $routes->get('delete/(:num)/(:num)', 'WidgetPlacementController::delete/$1/$2');
+});
+
+//Routes for frontend website
+$routes->group('/', function ($routes) {
+    
+    
+    // Products
+    $routes->get('products', 'Frontend::products'); // Product listing page
+    $routes->get('products/category/(:num)', 'Frontend::products/$1'); // Products filtered by category
+    $routes->get('products/(:num)', 'Frontend::productDetails/$1'); // Product details
+
+    // Homepage
+    $routes->get('', 'Frontend::index'); // Default homepage
+    $routes->get('(:any)', 'Frontend::index/$1'); // CMS dynamic pages by slug
+    // Dynamic Pages
+    //$routes->get('page/(:any)', 'Frontend::page/$1'); // CMS dynamic pages by slug
 });
 
 

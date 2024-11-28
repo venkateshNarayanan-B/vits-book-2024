@@ -39,7 +39,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = ['form','cookie','permission','theme'];
+    protected $helpers = ['form','cookie','permission','theme','widget'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -67,7 +67,7 @@ abstract class BaseController extends Controller
         $this->activeTheme = $themeModel->where('is_active', 1)->first();
 
         if ($this->activeTheme) {
-            $this->themePath = 'themes/' . $this->activeTheme['theme_name'] . '/';
+            $this->themePath = 'theme/' . $this->activeTheme['directory'] . '/';
         } else {
             // Fallback to default theme
             $this->themePath = 'themes/default/';
