@@ -15,6 +15,8 @@ class Frontend extends BaseController
 {
     protected $theme;
     protected $themePath;
+    protected $menuModel;
+    protected $topNav;
 
     public function __construct()
     {
@@ -28,6 +30,12 @@ class Frontend extends BaseController
 
         // Set the theme path
         $this->themePath = "theme/{$this->theme['directory']}";
+
+        //initiating menu
+        $this->menuModel = new MenuModel();
+        $this->topNav = $this->menuModel->getHierarchicalMenu('header');
+        //$footerMenu = $this->menuModel->getHierarchicalMenu('footer');
+        //$sidebarMenu = $this->menuModel->getHierarchicalMenu('sidebar');
     }
 
     /**
@@ -41,8 +49,7 @@ class Frontend extends BaseController
         // Example: Fetch dynamic homepage widgets (adjust as needed)
         $widgetModel = new WidgetPlacementModel();
         $widgets = $widgetModel->where('id', $this->theme['id'])->findAll();
-
-       
+        
         $pagesModel = new PagesModel();
         $page = $pagesModel->where('slug', $slug)->first();
         //var_dump($page);
@@ -55,7 +62,7 @@ class Frontend extends BaseController
             'title' => $page['title'],
             'widgets' => $widgets,
             'content' => $page['content'],
-            'slug'=> $slug
+            'topNav'=> $this->topNav
         ]);
     }
 
@@ -78,6 +85,7 @@ class Frontend extends BaseController
             'title' => 'Our Products',
             'products' => $products,
             'categories' => $categories,
+            'topNav'=> $this->topNav
         ]);
     }
 
@@ -107,6 +115,7 @@ class Frontend extends BaseController
             'product' => $product,
             'images' => $images,
             'specifications' => $specifications,
+            'topNav'=> $this->topNav
         ]);
     }
 
