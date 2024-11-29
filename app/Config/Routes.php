@@ -259,6 +259,26 @@ $routes->group('cms/widgets', ['filter' => 'auth'], function ($routes) {
     $routes->get('delete/(:num)/(:num)', 'WidgetPlacementController::delete/$1/$2');
 });
 
+//CMS slider routes
+$routes->group('cms/sliders', ['filter' => 'auth'], function ($routes) {
+    $routes->get('/', 'SlidersController::index'); // List all sliders
+    $routes->post('getSlidersData', 'SlidersController::getSlidersData'); // Fetch slider data for DataTable
+    $routes->get('create', 'SlidersController::create'); // Show the create slider form
+    $routes->post('store', 'SlidersController::store'); // Store a new slider
+    $routes->get('edit/(:num)', 'SlidersController::edit/$1'); // Show the edit form for a slider
+    $routes->post('update/(:num)', 'SlidersController::update/$1'); // Update a slider
+    $routes->get('delete/(:num)', 'SlidersController::delete/$1'); // Delete a slider
+
+    // Slide Management
+    $routes->get('slides/(:num)', 'SlidersController::slides/$1'); // List slides for a slider
+    $routes->get('slides/create/(:num)', 'SlidersController::createSlide/$1'); // Create slide form
+    $routes->post('slides/store/(:num)', 'SlidersController::storeSlide/$1'); // Store slide
+    $routes->get('slides/edit/(:num)', 'SlidersController::editSlide/$1'); // Edit slide form
+    $routes->post('slides/update/(:num)', 'SlidersController::updateSlide/$1'); // Update slide
+    $routes->get('slides/delete/(:num)', 'SlidersController::deleteSlide/$1'); // Delete slide
+});
+
+
 //Routes for frontend website
 $routes->group('/', function ($routes) {
     
