@@ -36,6 +36,8 @@
                 <div class="card-body">
                     <form action="<?= base_url('cms/menus/update/' . $menuVar['id']) ?>" method="post">
                         <?= csrf_field() ?>
+                        
+                        <!-- Menu Name -->
                         <div class="form-group">
                             <label for="menu_name">Menu Name</label>
                             <input type="text" name="menu_name" id="menu_name" class="form-control <?= isset($errors['menu_name']) ? 'is-invalid' : '' ?>" value="<?= old('menu_name', $menuVar['menu_name']) ?>">
@@ -43,6 +45,8 @@
                                 <div class="invalid-feedback"><?= $errors['menu_name'] ?></div>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Parent Menu -->
                         <div class="form-group">
                             <label for="parent_id">Parent Menu</label>
                             <select name="parent_id" id="parent_id" class="form-control select2">
@@ -54,6 +58,8 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
+                        <!-- URL -->
                         <div class="form-group">
                             <label for="url">URL</label>
                             <input type="text" name="url" id="url" class="form-control <?= isset($errors['url']) ? 'is-invalid' : '' ?>" value="<?= old('url', $menuVar['url']) ?>">
@@ -61,6 +67,8 @@
                                 <div class="invalid-feedback"><?= $errors['url'] ?></div>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Position -->
                         <div class="form-group">
                             <label for="position">Position</label>
                             <input type="number" name="position" id="position" class="form-control <?= isset($errors['position']) ? 'is-invalid' : '' ?>" value="<?= old('position', $menuVar['position']) ?>">
@@ -68,6 +76,33 @@
                                 <div class="invalid-feedback"><?= $errors['position'] ?></div>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Menu Type -->
+                        <div class="form-group">
+                            <label for="menu_type">Menu Type</label>
+                            <select name="menu_type" id="menu_type" class="form-control">
+                                <?php foreach ($menuTypes as $type): ?>
+                                    <option value="<?= $type ?>" <?= old('menu_type', $menuVar['menu_type']) == $type ? 'selected' : '' ?>>
+                                        <?= ucfirst($type) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <!-- Theme Location -->
+                        <div class="form-group">
+                            <label for="theme_location">Theme Location</label>
+                            <select name="theme_location" id="theme_location" class="form-control">
+                                <option value="">None</option>
+                                <?php foreach ($menuTypes as $type): ?>
+                                    <option value="<?= $type ?>" <?= old('theme_location', $menuVar['theme_location']) == $type ? 'selected' : '' ?>>
+                                        <?= ucfirst($type) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <!-- Status -->
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control <?= isset($errors['status']) ? 'is-invalid' : '' ?>">
@@ -78,6 +113,7 @@
                                 <div class="invalid-feedback"><?= $errors['status'] ?></div>
                             <?php endif; ?>
                         </div>
+
                         <button type="submit" class="btn btn-success">Update Menu</button>
                         <a href="<?= base_url('cms/menus') ?>" class="btn btn-secondary">Cancel</a>
                     </form>

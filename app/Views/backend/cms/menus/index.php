@@ -44,6 +44,8 @@
                                 <th>Parent Menu</th>
                                 <th>URL</th>
                                 <th>Position</th>
+                                <th>Menu Type</th>
+                                <th>Theme Location</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -90,6 +92,18 @@
                     }
                 },
                 { "data": "position" },
+                { 
+                    "data": "menu_type",
+                    "render": function(data) {
+                        return data ? data : '<em>Not Set</em>';
+                    }
+                },
+                { 
+                    "data": "theme_location",
+                    "render": function(data) {
+                        return data ? data : '<em>Not Assigned</em>';
+                    }
+                },
                 { 
                     "data": "status",
                     "render": function(data) {

@@ -9,6 +9,7 @@ use App\Models\ProductCategoryModel;
 use App\Models\ProductModel;
 use App\Models\ProductImageModel;
 use App\Models\PagesModel;
+use App\Models\MenuModel;
 
 class Frontend extends BaseController
 {

@@ -24,21 +24,21 @@ class MenusController extends BaseController
         return view('backend/cms/menus/index', compact('title', 'page_title', 'menu'));
     }
 
-    // Get data for DataTable
+    // Get Data for DataTable
     public function getMenusData()
     {
         $request = service('request');
-        $menusModel = $this->menuModel;
 
-        // DataTables parameters
+        // Fetch parameters
         $draw = $request->getPost('draw');
         $start = $request->getPost('start');
         $length = $request->getPost('length');
         $searchValue = $request->getPost('search')['value'];
 
-        // Base query with join for parent menu name
-        $query = $menusModel->select('menus.id, menus.menu_name, menus.url, menus.position, menus.status, parent.menu_name as parent_name')
-                            ->join('menus as parent', 'menus.parent_id = parent.id', 'left');
+        // Base query with parent menu join
+        $query = $this->menuModel
+            ->select('menus.id, menus.menu_name, menus.url, menus.position, menus.status, menus.menu_type, menus.theme_location, parent.menu_name as parent_name')
+            ->join('menus as parent', 'menus.parent_id = parent.id', 'left');
 
         // Total records
         $totalRecords = $query->countAllResults(false);
@@ -48,8 +48,8 @@ class MenusController extends BaseController
             $query->groupStart()
                 ->like('menus.menu_name', $searchValue)
                 ->orLike('menus.url', $searchValue)
-                ->orLike('menus.status', $searchValue)
-                ->orLike('parent.menu_name', $searchValue) // Search in parent menu name
+                ->orLike('menus.menu_type', $searchValue)
+                ->orLike('menus.theme_location', $searchValue)
                 ->groupEnd();
         }
 
@@ -58,7 +58,7 @@ class MenusController extends BaseController
 
         // Fetch paginated data
         $menus = $query->orderBy('menus.position', 'ASC')
-                       ->findAll($length, $start);
+            ->findAll($length, $start);
 
         // Format data for DataTable
         $data = [];
@@ -69,6 +69,8 @@ class MenusController extends BaseController
                 'url' => $menu['url'] ?: '<em>No URL</em>',
                 'parent_name' => $menu['parent_name'] ?? '<em>No Parent</em>',
                 'position' => $menu['position'],
+                'menu_type' => $menu['menu_type'] ?? '<em>Not Set</em>',
+                'theme_location' => $menu['theme_location'] ?? '<em>Not Assigned</em>',
                 'status' => $menu['status'],
             ];
         }
@@ -91,18 +93,18 @@ class MenusController extends BaseController
         $page_title = 'Add New Menu';
         $menu = 'cms';
 
-        // Fetch parent menus for dropdown
+        $menuTypes = ['header', 'footer', 'sidebar']; // Available menu types
         $parentMenus = $this->menuModel->where('parent_id', null)->findAll();
 
-        return view('backend/cms/menus/create', compact('title', 'page_title', 'menu', 'parentMenus'));
+        return view('backend/cms/menus/create', compact('title', 'page_title', 'menu', 'menuTypes', 'parentMenus'));
     }
 
     // Store Menu
     public function store()
     {
         if (!$this->validate([
-            'menu_name' => 'required',
-            'position'  => 'required|integer',
+            'menu_name' => 'required|string',
+            'position' => 'required|integer',
         ])) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
@@ -110,15 +112,17 @@ class MenusController extends BaseController
         $data = [
             'menu_name' => $this->request->getPost('menu_name'),
             'parent_id' => $this->request->getPost('parent_id') ?: null,
-            'page_id'   => $this->request->getPost('page_id') ?: null,
-            'url'       => $this->request->getPost('url'),
-            'position'  => $this->request->getPost('position'),
-            'status'    => $this->request->getPost('status'),
+            'page_id' => $this->request->getPost('page_id') ?: null,
+            'url' => $this->request->getPost('url'),
+            'position' => $this->request->getPost('position'),
+            'status' => $this->request->getPost('status'),
+            'menu_type' => $this->request->getPost('menu_type'),
+            'theme_location' => $this->request->getPost('theme_location'),
         ];
 
         $this->menuModel->insert($data);
 
-        return redirect()->to('cms/menus')->with('success', 'Menu created successfully.');
+        return redirect()->to('/cms/menus')->with('swal_success', 'Menu created successfully.');
     }
 
     // Edit Menu
@@ -127,25 +131,25 @@ class MenusController extends BaseController
         $menuVar = $this->menuModel->find($id);
 
         if (!$menuVar) {
-            return redirect()->to('cms/menus')->with('error', 'Menu not found.');
+            return redirect()->to('/cms/menus')->with('swal_error', 'Menu not found.');
         }
 
         $title = 'Edit Menu';
         $page_title = 'Edit Menu: ' . $menuVar['menu_name'];
-        $menu = 'cms'; // Avoid conflict with the $menu variable
+        $menu = 'cms';
 
-        // Fetch parent menus for dropdown
+        $menuTypes = ['header', 'footer', 'sidebar'];
         $parentMenus = $this->menuModel->where('id !=', $id)->findAll();
 
-        return view('backend/cms/menus/edit', compact('title', 'page_title', 'menuVar', 'menu', 'parentMenus'));
+        return view('backend/cms/menus/edit', compact('title', 'page_title', 'menuVar', 'menu', 'menuTypes', 'parentMenus'));
     }
 
     // Update Menu
     public function update($id)
     {
         if (!$this->validate([
-            'menu_name' => 'required',
-            'position'  => 'required|integer',
+            'menu_name' => 'required|string',
+            'position' => 'required|integer',
         ])) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
@@ -153,26 +157,28 @@ class MenusController extends BaseController
         $data = [
             'menu_name' => $this->request->getPost('menu_name'),
             'parent_id' => $this->request->getPost('parent_id') ?: null,
-            'page_id'   => $this->request->getPost('page_id') ?: null,
-            'url'       => $this->request->getPost('url'),
-            'position'  => $this->request->getPost('position'),
-            'status'    => $this->request->getPost('status'),
+            'page_id' => $this->request->getPost('page_id') ?: null,
+            'url' => $this->request->getPost('url'),
+            'position' => $this->request->getPost('position'),
+            'status' => $this->request->getPost('status'),
+            'menu_type' => $this->request->getPost('menu_type'),
+            'theme_location' => $this->request->getPost('theme_location'),
         ];
 
         $this->menuModel->update($id, $data);
 
-        return redirect()->to('cms/menus')->with('success', 'Menu updated successfully.');
+        return redirect()->to('/cms/menus')->with('swal_success', 'Menu updated successfully.');
     }
 
     // Delete Menu
     public function delete($id)
     {
         if (!$this->menuModel->find($id)) {
-            return redirect()->to('cms/menus')->with('error', 'Menu not found.');
+            return redirect()->to('/cms/menus')->with('swal_error', 'Menu not found.');
         }
 
         $this->menuModel->delete($id);
 
-        return redirect()->to('cms/menus')->with('success', 'Menu deleted successfully.');
+        return redirect()->to('/cms/menus')->with('swal_success', 'Menu deleted successfully.');
     }
 }
