@@ -98,6 +98,9 @@ class ProductController extends BaseController
             'price' => 'permit_empty|decimal',
             'description' => 'permit_empty|string',
             'status' => 'required|in_list[active,inactive]',
+            'meta_title' => 'max_length[255]',
+            'meta_description' => 'max_length[255]',
+            'meta_keywords' => 'max_length[255]',
         ]);
 
         if (!$this->validate($validation->getRules())) {
@@ -110,6 +113,9 @@ class ProductController extends BaseController
             'description' => $this->request->getPost('description'),
             'price' => $this->request->getPost('price'),
             'status' => $this->request->getPost('status'),
+            'meta_title' => $this->request->getPost('meta_title'),
+            'meta_description' => $this->request->getPost('meta_description'),
+            'meta_keywords' => $this->request->getPost('meta_keywords'),
         ]);
 
         $specifications = $this->request->getPost('specifications');
@@ -161,6 +167,7 @@ class ProductController extends BaseController
             'category_id' => 'required|integer',
             'name' => 'required|max_length[255]',
             'price' => 'permit_empty|decimal',
+            
         ]);
 
         if (!$this->validate($validation->getRules())) {
@@ -173,6 +180,9 @@ class ProductController extends BaseController
             'description' => $this->request->getPost('description'),
             'price' => $this->request->getPost('price'),
             'status' => $this->request->getPost('status'),
+            'meta_title' => $this->request->getPost('meta_title'),
+            'meta_description' => $this->request->getPost('meta_description'),
+            'meta_keywords' => $this->request->getPost('meta_keywords'),
         ]);
 
         $db = \Config\Database::connect();

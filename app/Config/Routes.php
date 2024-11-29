@@ -278,7 +278,8 @@ $routes->group('cms/sliders', ['filter' => 'auth'], function ($routes) {
     $routes->get('slides/delete/(:num)', 'SlidersController::deleteSlide/$1'); // Delete slide
 });
 
-
+//website sitemap routes
+$routes->get('sitemap.xml', 'SitemapController::index');
 //Routes for frontend website
 $routes->group('/', function ($routes) {
     

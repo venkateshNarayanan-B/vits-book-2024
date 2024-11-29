@@ -12,7 +12,8 @@ class ProductModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'category_id', 'description', 'price', 'status', 'image',  'created_at', 'updated_at'];
+    protected $allowedFields    = ['name', 'category_id', 'description', 'price', 'status', 'image', 'slug', 
+    'meta_title', 'meta_description', 'meta_keywords',  'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
 

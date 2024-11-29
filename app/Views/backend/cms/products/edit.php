@@ -70,6 +70,27 @@
                             <textarea class="form-control" id="description" name="description" rows="5"><?= old('description', $product['description']) ?></textarea>
                         </div>
 
+                        <!-- Meta Title -->
+                        <div class="form-group">
+                            <label for="meta_title">Meta Title</label>
+                            <input type="text" class="form-control <?= session('errors.meta_title') ? 'is-invalid' : '' ?>" id="meta_title" name="meta_title" value="<?= old('meta_title', $product['meta_title']) ?>" required>
+                            <div class="invalid-feedback"><?= session('errors.meta_title') ?></div>
+                        </div>
+
+                        <!-- Meta Description -->
+                        <div class="form-group">
+                            <label for="meta_description">Meta Description</label>
+                            <textarea class="form-control <?= session('errors.meta_description') ? 'is-invalid' : '' ?>" id="meta_description" name="meta_description" rows="5"><?= old('meta_description', $product['meta_description']) ?></textarea>
+                            <div class="invalid-feedback"><?= session('errors.meta_description') ?></div>
+                        </div>
+
+                        <!-- Meta Keywords -->
+                        <div class="form-group">
+                            <label for="meta_keywords">Meta Keywords</label>
+                            <textarea class="form-control <?= session('errors.meta_keywords') ? 'is-invalid' : '' ?>" id="meta_keywords" name="meta_keywords" rows="5"><?= old('meta_keywords', $product['meta_keywords']) ?></textarea>
+                            <div class="invalid-feedback"><?= session('errors.meta_keywords') ?></div>
+                        </div>
+
                         <!-- Status -->
                         <div class="form-group">
                             <label for="status">Status</label>
