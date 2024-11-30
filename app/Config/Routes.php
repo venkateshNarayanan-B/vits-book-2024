@@ -278,8 +278,19 @@ $routes->group('cms/sliders', ['filter' => 'auth'], function ($routes) {
     $routes->get('slides/delete/(:num)', 'SlidersController::deleteSlide/$1'); // Delete slide
 });
 
+$routes->group('cms',  function ($routes) {
+    // Enquiries Management
+    $routes->get('enquiries', 'EnquiryController::index'); // List all enquiries
+    $routes->post('enquiries/get-data', 'EnquiryController::getEnquiriesData'); // DataTable AJAX data
+    $routes->get('enquiries/view/(:num)', 'EnquiryController::view/$1'); // View specific enquiry
+    $routes->post('enquiries/respond/(:num)', 'EnquiryController::respond/$1'); // Mark as responded
+    $routes->post('enquiries/delete/(:num)', 'EnquiryController::delete/$1'); // Delete enquiry
+});
+
+
 //website sitemap routes
 $routes->get('sitemap.xml', 'SitemapController::index');
+
 //Routes for frontend website
 $routes->group('/', function ($routes) {
     
@@ -288,6 +299,7 @@ $routes->group('/', function ($routes) {
     $routes->get('products', 'Frontend::products'); // Product listing page
     $routes->get('products/category/(:num)', 'Frontend::products/$1'); // Products filtered by category
     $routes->get('products/(:num)', 'Frontend::productDetails/$1'); // Product details
+    $routes->post('submit-enquiry', 'Frontend::submitEnquiry');
 
     // Homepage
     $routes->get('', 'Frontend::index'); // Default homepage

@@ -159,6 +159,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?= site_url("cms/enquiries") ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Products Enquiries</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= site_url("cms/menus") ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menus</p>

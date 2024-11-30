@@ -119,5 +119,34 @@ class Frontend extends BaseController
         ]);
     }
 
+    public function submitEnquiry()
+    {
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'product_id' => 'required|integer',
+            'name' => 'required|max_length[255]',
+            'email' => 'required|valid_email|max_length[255]',
+            'phone' => 'permit_empty|max_length[15]',
+            'message' => 'required',
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('swal_error', $validation->getErrors());
+        }
+
+        $enquiryModel = new \App\Models\ProductEnquiryModel();
+        $enquiryModel->insert([
+            'product_id' => $this->request->getPost('product_id'),
+            'name' => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+            'message' => $this->request->getPost('message'),
+        ]);
+
+        return redirect()->back()->with('swal_success', 'Your enquiry has been submitted successfully.');
+    }
+
+
     
 }
