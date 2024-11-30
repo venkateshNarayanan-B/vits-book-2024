@@ -294,7 +294,7 @@ $routes->get('sitemap.xml', 'SitemapController::index');
 //Routes for frontend website
 $routes->group('/', function ($routes) {
     
-    
+    $routes->get('test', 'Frontend::test'); // Product listing page
     // Products
     $routes->get('products', 'Frontend::products'); // Product listing page
     $routes->get('products/category/(:num)', 'Frontend::products/$1'); // Products filtered by category

@@ -10,6 +10,8 @@ use App\Models\ProductModel;
 use App\Models\ProductImageModel;
 use App\Models\PagesModel;
 use App\Models\MenuModel;
+use App\Models\SlideModel;
+use App\Models\SliderModel;
 
 class Frontend extends BaseController
 {
@@ -17,6 +19,8 @@ class Frontend extends BaseController
     protected $themePath;
     protected $menuModel;
     protected $topNav;
+    protected $slideModel;
+    protected $sliderModel;
 
     public function __construct()
     {
@@ -36,6 +40,9 @@ class Frontend extends BaseController
         $this->topNav = $this->menuModel->getHierarchicalMenu('header');
         //$footerMenu = $this->menuModel->getHierarchicalMenu('footer');
         //$sidebarMenu = $this->menuModel->getHierarchicalMenu('sidebar');
+
+        $this->slideModel = new SlideModel();
+        $this->sliderModel = new SliderModel();
     }
 
     /**
@@ -147,6 +154,36 @@ class Frontend extends BaseController
         return redirect()->back()->with('swal_success', 'Your enquiry has been submitted successfully.');
     }
 
+    public function test()
+    {   
+        $sliderId = 2; // Assuming slider ID 1 is for the homepage slider
+        $slides = $this->getSlidesForFrontend($sliderId);
+        $data = [
+            'topNav' => $this->topNav,
+            'slides' => $slides
+        ];
+        //var_dump($slides);
+        return view('theme/farmix/home', $data);
+    }
 
+    public function getSlidesForFrontend($sliderId)
+    {
+        // Fetch slider
+        $slider = $this->sliderModel->find($sliderId);
+
+        if (!$slider) {
+            return $this->response->setStatusCode(404, 'Slider not found');
+        }
+
+        // Fetch slides for the slider
+        $slides = $this->slideModel
+            ->select('title, description, image, button_text, button_link')
+            ->where('slider_id', $sliderId)
+            ->orderBy('position', 'ASC')
+            ->findAll();
+
+        // Return JSON response for API usage
+        return $slides;
+    }
     
 }
