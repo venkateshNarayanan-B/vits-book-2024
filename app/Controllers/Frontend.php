@@ -65,7 +65,7 @@ class Frontend extends BaseController
         }
 
         // Pass widgets to the homepage view
-        return view("{$this->themePath}/index", [
+        return view("{$this->themePath}/{$slug}", [
             'title' => $page['title'],
             'widgets' => $widgets,
             'content' => $page['content'],
@@ -120,8 +120,6 @@ class Frontend extends BaseController
         return view("{$this->themePath}/product_details", [
             'title' => $product['name'],
             'product' => $product,
-            'images' => $images,
-            'specifications' => $specifications,
             'topNav'=> $this->topNav
         ]);
     }

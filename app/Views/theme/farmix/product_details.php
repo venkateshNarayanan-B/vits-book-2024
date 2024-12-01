@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <?php
-$product_detail = productDetails(6);
+$product_detail = productDetails($product['id']);
 
 ?>
 <!--==============================
@@ -37,7 +37,7 @@ Products-details area
                     <?php if(!empty($product_detail['images'])): ?>
                         <?php foreach($product_detail['images'] as $image): ?>
                             <div>
-                                <div class="thumb"><img src="<?= $image['image_path'] ?>" alt="<?= $product_detail['title'] ?>"></div>
+                                <div class="thumb"><img src="<?= base_url($image['image_path']) ?>" alt="<?= $product_detail['title'] ?>"></div>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -47,7 +47,7 @@ Products-details area
                 <div class="product-big-img vs-carousel" data-slide-show="1" data-fade="true" data-asnavfor=".product-thumb-slide">
                 <?php if(!empty($product_detail['images'])): ?>
                     <?php foreach($product_detail['images'] as $image): ?>
-                    <div class="img"><img src="<?= $image['image_path'] ?>" alt="<?= $product_detail['title'] ?>"></div>
+                    <div class="img"><img src="<?= base_url($image['image_path']) ?>" alt="<?= $product_detail['title'] ?>"></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
                 </div>
