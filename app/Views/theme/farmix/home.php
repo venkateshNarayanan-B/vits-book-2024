@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<?= $this->include("theme/farmix/widget/home-slider", ['slides' => $slides]) ?>
+<?= $this->include("theme/farmix/widget/home-slider") ?>
 
 <!--==============================
 Categories Area

@@ -4,7 +4,7 @@ Hero Area
 <div class="hero-layout2">
     <div class="container position-relative">
         <div class="vs-carousel" data-dots="true" data-slide-show="1" data-autoplay="true" data-fade="true">
-            <?php foreach($slides as $slide): ?>
+            <?php foreach(homeSlides(2) as $slide): ?>
             <div class="hero-slide">
                 <div class="container">
                     <div class="row g-5 align-items-center justify-content-between">

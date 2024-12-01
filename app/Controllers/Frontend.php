@@ -156,34 +156,11 @@ class Frontend extends BaseController
 
     public function test()
     {   
-        $sliderId = 2; // Assuming slider ID 1 is for the homepage slider
-        $slides = $this->getSlidesForFrontend($sliderId);
-        $data = [
-            'topNav' => $this->topNav,
-            'slides' => $slides
+         $data = [
+            'topNav' => $this->topNav
         ];
         //var_dump($slides);
         return view('theme/farmix/home', $data);
-    }
-
-    public function getSlidesForFrontend($sliderId)
-    {
-        // Fetch slider
-        $slider = $this->sliderModel->find($sliderId);
-
-        if (!$slider) {
-            return $this->response->setStatusCode(404, 'Slider not found');
-        }
-
-        // Fetch slides for the slider
-        $slides = $this->slideModel
-            ->select('title, description, image, button_text, button_link')
-            ->where('slider_id', $sliderId)
-            ->orderBy('position', 'ASC')
-            ->findAll();
-
-        // Return JSON response for API usage
-        return $slides;
     }
     
 }
