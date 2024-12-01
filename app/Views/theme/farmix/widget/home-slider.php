@@ -13,7 +13,7 @@ Hero Area
                                 <h1 class="hero-title"><?= $slide['title'] ?></h1>
                                 <p class="hero-text"><?= $slide['description'] ?></p>
                                 <div class="hero-bottom">
-                                    <a href="product.html" class="vs-btn"><?= $slide['button_text'] ?></a>
+                                    <a href="<?= $slide['button_link'] ?>" class="vs-btn"><?= $slide['button_text'] ?></a>
                                     <img src="<?= base_url('themes/farmix/') ?>assets/img/bg/hero-logo-1.png" alt="brand-logo">
                                 </div>
                             </div>
