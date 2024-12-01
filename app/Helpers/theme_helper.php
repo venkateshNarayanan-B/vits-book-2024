@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ProductCategoryModel;
 use App\Models\ProductImageModel;
 use App\Models\ProductModel;
 use App\Models\SlideModel;
@@ -46,6 +47,7 @@ function productDetails($id)
 {
     $productModel = new ProductModel();
     $productImageModel = new ProductImageModel();
+    $productCategoryModel = new ProductCategoryModel();
 
     // Fetch product details
     $product = $productModel->find($id);
@@ -54,6 +56,8 @@ function productDetails($id)
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found.");
     }
 
+    //Fetch related category of the product
+    $category = $productCategoryModel->where('id', $product['category_id'])->first();
     // Fetch related images and specifications
     $images = $productImageModel->where('product_id', $id)->findAll();
     //$images = $productModel->getImages($id);
@@ -63,6 +67,7 @@ function productDetails($id)
     $data['title']          = $product['name'];
     $data['images']         = $images;
     $data['specifications'] = $specifications;
+    $data['category'] = $category['name'];
     
     // Pass data to the product details view
     return $data;

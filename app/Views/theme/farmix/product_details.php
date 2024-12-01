@@ -16,8 +16,9 @@ Breadcumb
         </div>
         <div class="breadcumb-menu-wrap">
             <ul class="breadcumb-menu">
-                <li><a href="index.html">Home</a></li>
-                <li>Our Products</li>
+                <li><a href="<?= base_url('/') ?>">Home</a></li>
+                <li>Products</li>
+                <li><?= $product_detail['title'] ?></li>
             </ul>
         </div>
     </div>
@@ -59,7 +60,7 @@ Products-details area
             <h2 class="product-title"><?= $product_detail['title'] ?></h2>
             <div class="actions">
                 
-                <p class="product-price">&#8377;<?= $product_detail['price'] ?> <del>&#8377;23.85</del></p>
+                <p class="product-price">&#8377;<?= $product_detail['price'] ?></p>
                 <p>For Shipping Terms Applied</p>
                 <a href="#" class="vs-btn" data-bs-toggle="modal" data-bs-target="#enquiryModal"><i class="far fa-inr"></i>Get Best Price</a>
                 <a href="#" class="icon-btn"><i class="far fa-heart"></i></a><br /><br />
@@ -72,7 +73,7 @@ Products-details area
                 
                 
                 <span class="posted_in">
-                <p>Category:</p> <a href="#" rel="tag">organic , </a><a href="#" rel="tag"> food , </a> <a href="#" rel="tag"> natural</a>
+                <p>Category:</p> <a href="#" rel="tag"><?= $product_detail['category'] ?></a>
             </span>
             </div>
             <div class="shep-img">
