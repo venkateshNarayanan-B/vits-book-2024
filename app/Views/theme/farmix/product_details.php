@@ -61,9 +61,9 @@ Products-details area
                 
                 <p class="product-price">&#8377;<?= $product_detail['price'] ?> <del>&#8377;23.85</del></p>
                 <p>For Shipping Terms Applied</p>
-                <a href="cart.html" class="vs-btn"><i class="far fa-inr"></i>Get Best Price</a>
+                <a href="#" class="vs-btn" data-bs-toggle="modal" data-bs-target="#enquiryModal"><i class="far fa-inr"></i>Get Best Price</a>
                 <a href="#" class="icon-btn"><i class="far fa-heart"></i></a><br /><br />
-                <a href="cart.html" class="vs-btn"><i class="far fa-envelope"></i>Send Enquiry</a>
+                <a href="#" class="vs-btn" data-bs-toggle="modal" data-bs-target="#enquiryModal"><i class="far fa-envelope"></i>Send Enquiry</a>
             </div>
             <div class="product_meta">
                 <span class="sku_wrapper">
@@ -135,6 +135,7 @@ Products-details area
                             </div>
                             <div class="row">
                                 <form action="<?= base_url('submit-enquiry') ?>" method="post">
+                                <input type="hidden" name="product_id" value="<?= $product_detail['id'] ?>">
                                 <div class="col-md-12 form-group">
                                 <input type="text" class="form-control" name="name" id="name" placeholder="Complete Name" required>
                                 </div>
@@ -161,4 +162,57 @@ Products-details area
         </div>
     </div>
 </div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="enquiryModal" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="enquiryModalLabel">Submit Your Enquiry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form action="<?= base_url('submit-enquiry') ?>" method="post">
+                    <input type="hidden" name="product_id" value="<?= $product_detail['id'] ?>">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Complete Name</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter your mobile number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Requirement Details</label>
+                        <textarea class="form-control" name="message" id="message" rows="3" placeholder="Enter your requirement" required></textarea>
+                    </div>
+                    <button type="submit" class="vs-btn w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->endSection() ?>
+<?= $this->section('scripts') ?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const enquiryModal = document.getElementById('enquiryModal');
+        enquiryModal.addEventListener('show.bs.modal', (event) => {
+            const button = event.relatedTarget; // Button that triggered the modal
+            const productName = button.getAttribute('data-product-name'); // Extract product name
+            const modalTitle = enquiryModal.querySelector('.modal-title');
+
+            // Update modal title with the product name
+            if (productName) {
+                modalTitle.textContent = `Submit Your Enquiry for ${productName}`;
+            }
+        });
+    });
+
+</script>
 <?= $this->endSection() ?>
