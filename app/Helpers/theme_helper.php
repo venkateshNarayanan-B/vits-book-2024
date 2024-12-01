@@ -72,3 +72,37 @@ function productDetails($id)
     // Pass data to the product details view
     return $data;
 }
+
+if (!function_exists('get_product_list')) {
+/**
+ * Get a list of all products with id, name, price, and featured image
+ *
+ * @return array
+ */
+    function get_product_list(): array
+    {
+        $productModel = new ProductModel();
+        $productImageModel = new ProductImageModel();
+
+        // Fetch all products
+        $products = $productModel->findAll();
+
+        // Prepare the product list
+        $productList = [];
+        foreach ($products as $product) {
+            $featuredImage = $productImageModel
+                ->where('product_id', $product['id'])
+                ->where('is_featured', true)
+                ->first();
+
+            $productList[] = [
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'price' => $product['price'],
+                'featured_image' => $featuredImage ? $featuredImage['image_path'] : null,
+            ];
+        }
+
+        return $productList;
+    }
+}

@@ -5,7 +5,7 @@
                 <img src="<?= base_url('themes/farmix/') ?>assets/img/icon/title-logo.png" alt="title logo">
             </div>
             <span class="sec-subtitle">Our Categories</span>
-            <h2 class="sec-title">Organic Products</h2>
+            <h2 class="sec-title">Organic Product Categories</h2>
         </div>
         <div class="row  justify-content-center vs-carousel" data-slide-show="5" data-lg-slide-show="4" data-md-slide-show="3" data-center-mode="true" data-autoplay="true" data-dots="true" data-arrows="false">
             <div class="col-auto">
