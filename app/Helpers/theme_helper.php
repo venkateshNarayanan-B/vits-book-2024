@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\ProductImageModel;
+use App\Models\ProductModel;
 use App\Models\SlideModel;
 use App\Models\SliderModel;
 use App\Models\ThemeModel;
@@ -35,4 +37,33 @@ function homeSlides($sliderId)
 
     // Return slides object
     return $slides;
+}
+
+/**
+ * Product Details
+ */
+function productDetails($id)
+{
+    $productModel = new ProductModel();
+    $productImageModel = new ProductImageModel();
+
+    // Fetch product details
+    $product = $productModel->find($id);
+
+    if (!$product) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found.");
+    }
+
+    // Fetch related images and specifications
+    $images = $productImageModel->where('product_id', $id)->findAll();
+    //$images = $productModel->getImages($id);
+    $specifications = $productModel->getSpecifications($id);
+
+    $data                   = $product;
+    $data['title']          = $product['name'];
+    $data['images']         = $images;
+    $data['specifications'] = $specifications;
+    
+    // Pass data to the product details view
+    return $data;
 }

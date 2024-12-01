@@ -160,7 +160,7 @@ class Frontend extends BaseController
             'topNav' => $this->topNav
         ];
         //var_dump($slides);
-        return view('theme/farmix/home', $data);
+        return view('theme/farmix/product_details', $data);
     }
     
 }

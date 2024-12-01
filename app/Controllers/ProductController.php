@@ -116,6 +116,7 @@ class ProductController extends BaseController
             'meta_title' => $this->request->getPost('meta_title'),
             'meta_description' => $this->request->getPost('meta_description'),
             'meta_keywords' => $this->request->getPost('meta_keywords'),
+            'slug' => url_title($this->request->getPost('name'), '-', true),
         ]);
 
         $specifications = $this->request->getPost('specifications');
@@ -183,6 +184,7 @@ class ProductController extends BaseController
             'meta_title' => $this->request->getPost('meta_title'),
             'meta_description' => $this->request->getPost('meta_description'),
             'meta_keywords' => $this->request->getPost('meta_keywords'),
+            'slug' => url_title($this->request->getPost('name'), '-', true),
         ]);
 
         $db = \Config\Database::connect();
