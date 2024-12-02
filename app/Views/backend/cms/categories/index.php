@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
                         <li class="breadcrumb-item active"><?= esc($page_title) ?></li>
                     </ol>
                 </div>
@@ -32,7 +32,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Manage Categories</h3>
-                    <a href="<?= base_url('cms/products/categories/create') ?>" class="btn btn-primary btn-sm float-right">
+                    <a href="<?= base_url('cms/categories/create') ?>" class="btn btn-primary btn-sm float-right">
                         <i class="fas fa-plus"></i> Add New Category
                     </a>
                 </div>
@@ -41,12 +41,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Image</th>
                                 <th>Category Name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
                         </tbody>
                     </table>
                 </div>
@@ -76,6 +76,16 @@
             },
             "columns": [
                 { "data": "id" },
+                {
+                    "data": "image",
+                    "render": function (data) {
+                        return data 
+                            ? `<img src="${data}" alt="Category Image" width="50">` 
+                            : 'No Image';
+                    },
+                    "orderable": false,
+                    "searchable": false,
+                },
                 { "data": "name" },
                 { "data": "actions", "orderable": false, "searchable": false }
             ]
@@ -100,5 +110,4 @@
         });
     });
 </script>
-
 <?= $this->endSection() ?>

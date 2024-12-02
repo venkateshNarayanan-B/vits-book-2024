@@ -194,7 +194,7 @@ $routes->group('cms/products', ['filter' => 'auth'], function ($routes) {
 
 });
 
-$routes->group('cms/products/categories', ['filter' => 'auth'], function ($routes) {
+$routes->group('cms/products/categories', function ($routes) {
     $routes->get('/', 'ProductCategoryController::index');
     $routes->get('create', 'ProductCategoryController::create');
     $routes->post('store', 'ProductCategoryController::store');

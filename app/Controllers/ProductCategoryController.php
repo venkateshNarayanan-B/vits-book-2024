@@ -26,37 +26,28 @@ class ProductCategoryController extends BaseController
     public function getData()
     {
         $request = service('request');
-        $categoryModel = $this->categoryModel;
+        $draw = $request->getPost('draw') ?? 0;
+        $start = $request->getPost('start') ?? 0;
+        $length = $request->getPost('length') ?? 10;
+        $searchValue = $request->getPost('search')['value'] ?? '';
 
-        // DataTable parameters
-        $draw = $request->getPost('draw');
-        $start = $request->getPost('start');
-        $length = $request->getPost('length');
-        $searchValue = $request->getPost('search')['value'];
-
-        // Total records
-        $totalRecords = $categoryModel->countAll();
-
-        // Apply search filter
+        $query = $this->categoryModel;
         if (!empty($searchValue)) {
-            $categoryModel->like('name', $searchValue);
+            $query->like('name', $searchValue);
         }
 
-        // Total filtered records
-        $totalFiltered = $categoryModel->countAllResults();
+        $totalFiltered = $query->countAllResults(false);
+        $categories = $query->orderBy('id', 'DESC')->findAll($length, $start);
+        $totalRecords = $this->categoryModel->countAll();
 
-        // Fetch paginated data
-        if (!empty($searchValue)) {
-            $categoryModel->like('name', $searchValue);
-        }
-        $categories = $categoryModel->orderBy('id', 'DESC')->findAll($length, $start);
-
-        // Format data for DataTable
         $data = [];
         foreach ($categories as $category) {
             $data[] = [
                 'id' => $category['id'],
                 'name' => esc($category['name']),
+                'image' => $category['image']
+                    ? base_url('uploads/categories/' . $category['image'])
+                    : null,
                 'actions' => '
                     <a href="' . base_url('cms/products/categories/edit/' . $category['id']) . '" class="btn btn-info btn-sm">
                         <i class="fas fa-edit"></i> Edit
@@ -67,7 +58,6 @@ class ProductCategoryController extends BaseController
             ];
         }
 
-        // Response for DataTable
         return $this->response->setJSON([
             'draw' => intval($draw),
             'recordsTotal' => $totalRecords,
@@ -88,19 +78,25 @@ class ProductCategoryController extends BaseController
     public function store()
     {
         $validation = \Config\Services::validation();
-
-        // Validate input
         $validation->setRules([
             'name' => 'required|max_length[255]',
+            'image' => 'uploaded[image]|max_size[image,1024]|is_image[image]|mime_in[image,image/jpg,image/jpeg,image/png,image/gif]',
         ]);
 
         if (!$this->validate($validation->getRules())) {
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        // Save category
-        $this->categoryModel->save([
+        $file = $this->request->getFile('image');
+        $fileName = null;
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fileName = $file->getRandomName();
+            $file->move('uploads/categories', $fileName);
+        }
+
+        $this->categoryModel->insert([
             'name' => $this->request->getPost('name'),
+            'image' => $fileName,
         ]);
 
         return redirect()->to('/cms/products/categories')->with('success', 'Category created successfully.');
@@ -111,8 +107,8 @@ class ProductCategoryController extends BaseController
         $title = 'Edit Category';
         $page_title = 'Edit Category';
         $menu = 'cms';
-        $category = $this->categoryModel->find($id);
 
+        $category = $this->categoryModel->find($id);
         if (!$category) {
             return redirect()->to('/cms/products/categories')->with('error', 'Category not found.');
         }
@@ -123,19 +119,31 @@ class ProductCategoryController extends BaseController
     public function update($id)
     {
         $validation = \Config\Services::validation();
-
-        // Validate input
         $validation->setRules([
             'name' => 'required|max_length[255]',
+            'image' => 'if_exist|max_size[image,1024]|is_image[image]|mime_in[image,image/jpg,image/jpeg,image/png,image/gif]',
         ]);
 
         if (!$this->validate($validation->getRules())) {
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        // Update category
+        $file = $this->request->getFile('image');
+        $fileName = null;
+
+        $category = $this->categoryModel->find($id);
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fileName = $file->getRandomName();
+            $file->move('uploads/categories', $fileName);
+
+            if ($category && $category['image']) {
+                @unlink('uploads/categories/' . $category['image']);
+            }
+        }
+
         $this->categoryModel->update($id, [
             'name' => $this->request->getPost('name'),
+            'image' => $fileName ?? $category['image'],
         ]);
 
         return redirect()->to('/cms/products/categories')->with('success', 'Category updated successfully.');
@@ -143,11 +151,17 @@ class ProductCategoryController extends BaseController
 
     public function delete($id)
     {
-        if (!$this->categoryModel->find($id)) {
+        $category = $this->categoryModel->find($id);
+        if (!$category) {
             return redirect()->to('/cms/products/categories')->with('error', 'Category not found.');
         }
 
+        if (!empty($category['image'])) {
+            @unlink('uploads/categories/' . $category['image']);
+        }
+
         $this->categoryModel->delete($id);
+
         return redirect()->to('/cms/products/categories')->with('success', 'Category deleted successfully.');
     }
 }

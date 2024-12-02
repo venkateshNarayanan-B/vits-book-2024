@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
-                        <li class="breadcrumb-item"><a href="<?= base_url('cms/products/categories') ?>">Categories</a></li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('cms/categories') ?>">Categories</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Add New Category</h3>
                 </div>
-                <form action="<?= base_url('cms/products/categories/store') ?>" method="POST">
+                <form action="<?= base_url('cms/products/categories/store') ?>" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="card-body">
                         <!-- Category Name -->
@@ -35,6 +35,13 @@
                             <label for="name">Category Name</label>
                             <input type="text" class="form-control <?= session('errors.name') ? 'is-invalid' : '' ?>" id="name" name="name" value="<?= old('name') ?>" placeholder="Enter category name" required>
                             <div class="invalid-feedback"><?= session('errors.name') ?></div>
+                        </div>
+
+                        <!-- Category Image -->
+                        <div class="form-group">
+                            <label for="image">Category Image</label>
+                            <input type="file" class="form-control-file <?= session('errors.image') ? 'is-invalid' : '' ?>" id="image" name="image" accept="image/*">
+                            <div class="invalid-feedback"><?= session('errors.image') ?></div>
                         </div>
                     </div>
                     <div class="card-footer">
