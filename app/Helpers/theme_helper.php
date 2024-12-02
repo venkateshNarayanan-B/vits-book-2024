@@ -43,14 +43,14 @@ function homeSlides($sliderId)
 /**
  * Product Details
  */
-function productDetails($id)
+function productDetails($slug)
 {
     $productModel = new ProductModel();
     $productImageModel = new ProductImageModel();
     $productCategoryModel = new ProductCategoryModel();
 
     // Fetch product details
-    $product = $productModel->find($id);
+    $product = $productModel->where('slug', $slug)->first();
 
     if (!$product) {
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found.");
@@ -59,9 +59,9 @@ function productDetails($id)
     //Fetch related category of the product
     $category = $productCategoryModel->where('id', $product['category_id'])->first();
     // Fetch related images and specifications
-    $images = $productImageModel->where('product_id', $id)->findAll();
+    $images = $productImageModel->where('product_id', $product['id'])->findAll();
     //$images = $productModel->getImages($id);
-    $specifications = $productModel->getSpecifications($id);
+    $specifications = $productModel->getSpecifications($product['id']);
 
     $data                   = $product;
     $data['title']          = $product['name'];
@@ -99,6 +99,7 @@ if (!function_exists('get_product_list')) {
                 'id' => $product['id'],
                 'name' => $product['name'],
                 'price' => $product['price'],
+                'slug' => $product['slug'],
                 'featured_image' => $featuredImage ? $featuredImage['image_path'] : null,
             ];
         }

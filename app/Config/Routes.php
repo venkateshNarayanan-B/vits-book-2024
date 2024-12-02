@@ -298,7 +298,7 @@ $routes->group('/', function ($routes) {
     // Products
     $routes->get('products', 'Frontend::products'); // Product listing page
     $routes->get('products/category/(:num)', 'Frontend::products/$1'); // Products filtered by category
-    $routes->get('products/(:num)', 'Frontend::productDetails/$1'); // Product details
+    $routes->get('products/(:any)', 'Frontend::productDetails/$1'); // Product details
     $routes->post('submit-enquiry', 'Frontend::submitEnquiry');
 
     // Homepage

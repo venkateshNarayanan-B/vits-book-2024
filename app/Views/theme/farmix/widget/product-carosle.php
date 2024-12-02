@@ -19,7 +19,7 @@
                 <div class="product-meta">30% Off</div>
                 <div class="product-about">
                     
-                    <h2 class="product-title"><a href="<?= base_url('products/'.$product['id']) ?>"><?= $product['name'] ?></a></h2>
+                    <h2 class="product-title"><a href="<?= base_url('products/'.$product['slug']) ?>"><?= $product['name'] ?></a></h2>
                     <span class="price"> &#8377; <?= $product['price'] ?></span>
                     <div class="rating">
                         <i class="fas fa-star"></i>
@@ -32,12 +32,12 @@
                 <div class="social-style">
                     <ul>
                         <li>
-                            <a class="main-icon" href="<?= base_url('products/'.$product['id']) ?>"><i class="far fa-shopping-basket"></i></a>
+                            <a class="main-icon" href="<?= base_url('products/'.$product['slug']) ?>"><i class="far fa-shopping-basket"></i></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>  
+        <?php endforeach; ?>  
     </div>
 </div>

@@ -99,22 +99,22 @@ class Frontend extends BaseController
     /**
      * Product Details
      */
-    public function productDetails($id)
+    public function productDetails($slug)
     {
         $productModel = new ProductModel();
         $productImageModel = new ProductImageModel();
 
         // Fetch product details
-        $product = $productModel->find($id);
+        $product = $productModel->where('slug', $slug)->first();
 
         if (!$product) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found.");
         }
 
         // Fetch related images and specifications
-        $images = $productImageModel->where('product_id', $id)->findAll();
+        $images = $productImageModel->where('product_id', $product['id'])->findAll();
         //$images = $productModel->getImages($id);
-        $specifications = $productModel->getSpecifications($id);
+        $specifications = $productModel->getSpecifications($product['id']);
 
         // Pass data to the product details view
         return view("{$this->themePath}/product_details", [

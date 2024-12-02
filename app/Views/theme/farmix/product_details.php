@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <?php
-$product_detail = productDetails($product['id']);
+$product_detail = productDetails($product['slug']);
 
 ?>
 <!--==============================
