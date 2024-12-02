@@ -1,5 +1,3 @@
-
-
 <header class="vs-header header-layout1">
     <div class="header-top">
         <div class="container">

@@ -2,7 +2,7 @@
     <ul>
         <?php foreach ($menus as $menu): ?>
             <li <?= !empty($menu['children']) ? 'class="menu-item-has-children"' : '' ?> >
-                <a href="<?= $menu['url'] ?: '#' ?>">
+                <a href="<?= base_url($menu['url']) ?: '#' ?>">
                     <?= esc($menu['menu_name']) ?>
                 </a>
                 <?php if (!empty($menu['children'])): ?>
