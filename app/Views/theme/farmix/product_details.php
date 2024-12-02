@@ -17,7 +17,7 @@ Breadcumb
         <div class="breadcumb-menu-wrap">
             <ul class="breadcumb-menu">
                 <li><a href="<?= base_url('/') ?>">Home</a></li>
-                <li>Products</li>
+                <li><a href="<?= base_url('/products') ?>">Products</a></li>
                 <li><?= $product_detail['title'] ?></li>
             </ul>
         </div>
