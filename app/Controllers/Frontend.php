@@ -76,7 +76,7 @@ class Frontend extends BaseController
     /**
      * Products Listing
      */
-    public function products()
+    public function products() 
     {
         $productModel = new ProductModel();
         $categoryModel = new ProductCategoryModel();
@@ -92,6 +92,26 @@ class Frontend extends BaseController
             'title' => 'Our Products',
             'products' => $products,
             'categories' => $categories,
+            'topNav'=> $this->topNav
+        ]);
+    }
+
+    public function category($id) 
+    {
+        $productModel = new ProductModel();
+        $categoryModel = new ProductCategoryModel();
+
+        // Fetch all products and categories
+       
+        $category = $categoryModel->where('id', $id)->first();
+        $products = $productModel->select('products.*, product_images.image_path AS featured_image')
+                         ->join('product_images', 'product_images.product_id = products.id AND product_images.is_featured = 1', 'left')
+                         ->findAll();
+        // Pass data to the products view
+        return view("{$this->themePath}/category", [
+            'title' => 'Our Products',
+            'products' => $products,
+            'category' => $category,
             'topNav'=> $this->topNav
         ]);
     }

@@ -107,3 +107,54 @@ if (!function_exists('get_product_list')) {
         return $productList;
     }
 }
+
+if (!function_exists('get_category_product_list')) {
+    /**
+     * Get a list of all products with id, name, price, and featured image
+     *
+     * @return array
+     */
+        function get_category_product_list($id): array
+        {
+            $productModel = new ProductModel();
+            $productImageModel = new ProductImageModel();
+    
+            // Fetch all products
+            $products = $productModel->where('category_id', $id)->findAll();
+    
+            // Prepare the product list
+            $productList = [];
+            foreach ($products as $product) {
+                $featuredImage = $productImageModel
+                    ->where('product_id', $product['id'])
+                    ->where('is_featured', true)
+                    ->first();
+    
+                $productList[] = [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'slug' => $product['slug'],
+                    'featured_image' => $featuredImage ? $featuredImage['image_path'] : null,
+                ];
+            }
+    
+            return $productList;
+        }
+    }
+
+    if (!function_exists('get_categories_list')) {
+        /**
+         * Get a list of all categories with id, name, image
+         *
+         * @return array
+         */
+            function get_categoried_list(): array
+            {
+                $categoryModel = new ProductCategoryModel();
+        
+                // Fetch all categories
+                $categories = $categoryModel->findAll();
+                return $categories;
+            }
+        }
