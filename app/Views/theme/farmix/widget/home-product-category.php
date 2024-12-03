@@ -19,13 +19,13 @@
                         <img src="<?= base_url('uploads/categories/'.$category['image']) ?>" alt="categorie">
                     </div>
                     <div class="categorie-content">
-                        <h3 class="categorie-title h5"><a href="<?= base_url('products/category/'.$category['id']) ?>"><?= $category['name'] ?></a></h3>
+                        <h3 class="categorie-title h5"><a href="<?= base_url('products/category/'.$category['slug']) ?>"><?= $category['name'] ?></a></h3>
                     </div>
                 </div>
             </div>
             
             <?php 
-            endforeach;
+                endforeach;
             endif; 
             ?>
         </div>

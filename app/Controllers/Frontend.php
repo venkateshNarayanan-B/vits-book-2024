@@ -96,14 +96,14 @@ class Frontend extends BaseController
         ]);
     }
 
-    public function category($id) 
+    public function category($slug) 
     {
         $productModel = new ProductModel();
         $categoryModel = new ProductCategoryModel();
 
         // Fetch all products and categories
        
-        $category = $categoryModel->where('id', $id)->first();
+        $category = $categoryModel->where('slug', $slug)->first();
         $products = $productModel->select('products.*, product_images.image_path AS featured_image')
                          ->join('product_images', 'product_images.product_id = products.id AND product_images.is_featured = 1', 'left')
                          ->findAll();

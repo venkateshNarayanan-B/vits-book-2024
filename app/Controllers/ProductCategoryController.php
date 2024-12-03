@@ -97,6 +97,7 @@ class ProductCategoryController extends BaseController
         $this->categoryModel->insert([
             'name' => $this->request->getPost('name'),
             'image' => $fileName,
+            'slug' => url_title($this->request->getPost('name'), '-', true),
         ]);
 
         return redirect()->to('/cms/products/categories')->with('success', 'Category created successfully.');
@@ -144,6 +145,7 @@ class ProductCategoryController extends BaseController
         $this->categoryModel->update($id, [
             'name' => $this->request->getPost('name'),
             'image' => $fileName ?? $category['image'],
+            'slug' => url_title($this->request->getPost('name'), '-', true),
         ]);
 
         return redirect()->to('/cms/products/categories')->with('success', 'Category updated successfully.');
