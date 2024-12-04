@@ -218,6 +218,18 @@ $routes->group('cms/faq', ['filter' => 'auth'], function ($routes) {
     $routes->post('datatable-data', 'FaqController::getData'); // Fetch data for DataTable
 });
 
+// Testimonials Routes
+$routes->group('cms/testimonials', function ($routes) {
+    $routes->get('/', 'TestimonialController::index'); // List all testimonials
+    $routes->post('getData', 'TestimonialController::getData'); // DataTable AJAX endpoint
+    $routes->get('create', 'TestimonialController::create'); // Show the create form
+    $routes->post('store', 'TestimonialController::store'); // Handle form submission for creation
+    $routes->get('edit/(:num)', 'TestimonialController::edit/$1'); // Show the edit form
+    $routes->post('update/(:num)', 'TestimonialController::update/$1'); // Handle form submission for update
+    $routes->get('delete/(:num)', 'TestimonialController::delete/$1'); // Delete a testimonial
+    $routes->get('test', 'TestimonialController::test'); // Delete a testimonial
+});
+
 
 //CMS content_block section
 $routes->group('cms/content-blocks', ['namespace' => 'App\Controllers'], function ($routes) {
