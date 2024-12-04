@@ -194,7 +194,7 @@ $routes->group('cms/products', ['filter' => 'auth'], function ($routes) {
 
 });
 
-$routes->group('cms/products/categories', ['filter' => 'auth'],function ($routes) {
+$routes->group('cms/products/categories', ['filter' => 'auth'], function ($routes) {
     $routes->get('/', 'ProductCategoryController::index');
     $routes->get('create', 'ProductCategoryController::create');
     $routes->post('store', 'ProductCategoryController::store');
@@ -219,7 +219,7 @@ $routes->group('cms/faq', ['filter' => 'auth'], function ($routes) {
 });
 
 // Testimonials Routes
-$routes->group('cms/testimonials', function ($routes) {
+$routes->group('cms/testimonials', ['filter' => 'auth'], function ($routes) {
     $routes->get('/', 'TestimonialController::index'); // List all testimonials
     $routes->post('getData', 'TestimonialController::getData'); // DataTable AJAX endpoint
     $routes->get('create', 'TestimonialController::create'); // Show the create form
