@@ -194,7 +194,7 @@ $routes->group('cms/products', ['filter' => 'auth'], function ($routes) {
 
 });
 
-$routes->group('cms/products/categories', function ($routes) {
+$routes->group('cms/products/categories', ['filter' => 'auth'],function ($routes) {
     $routes->get('/', 'ProductCategoryController::index');
     $routes->get('create', 'ProductCategoryController::create');
     $routes->post('store', 'ProductCategoryController::store');
@@ -204,6 +204,20 @@ $routes->group('cms/products/categories', function ($routes) {
     $routes->post('getData', 'ProductCategoryController::getData');
 
 });
+
+// CMS FAQ route section
+$routes->group('cms/faq', ['filter' => 'auth'], function ($routes) {
+    // FAQs
+    $routes->get('/', 'FaqController::index'); // List all FAQs
+    $routes->get('create', 'FaqController::create'); // Show form to create a new FAQ
+    $routes->post('store', 'FaqController::store'); // Store a new FAQ
+    $routes->get('edit/(:num)', 'FaqController::edit/$1'); // Edit an existing FAQ
+    $routes->post('update/(:num)', 'FaqController::update/$1'); // Update an existing FAQ
+    $routes->post('delete/(:num)', 'FaqController::delete/$1'); // Delete an FAQ
+
+    $routes->post('datatable-data', 'FaqController::getData'); // Fetch data for DataTable
+});
+
 
 //CMS content_block section
 $routes->group('cms/content-blocks', ['namespace' => 'App\Controllers'], function ($routes) {
