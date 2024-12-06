@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\FaqModel;
 use App\Models\ProductCategoryModel;
 use App\Models\ProductImageModel;
 use App\Models\ProductModel;
 use App\Models\SlideModel;
 use App\Models\SliderModel;
+use App\Models\TestimonialModel;
 use App\Models\ThemeModel;
 
 function getActiveTheme()
@@ -156,5 +158,42 @@ if (!function_exists('get_category_product_list')) {
                 // Fetch all categories
                 $categories = $categoryModel->findAll();
                 return $categories;
+            }
+        }
+    
+    if (!function_exists('get_faq_list')) {
+        /**
+         * Get a list of all faq with id, question, answer
+         *
+         * @return array
+         */
+            function get_faq_list(): array
+            {
+                $faqModel = new FaqModel();
+        
+                // Fetch all categories
+                $faqs = $faqModel->findAll();
+                if (!empty($faqs)) {
+                    // Add an additional key-value pair to the first record
+                    $faqs[0]['show'] = 'show';
+                }
+                return $faqs;
+            }
+        }
+
+    if (!function_exists('get_testimonials_list')) {
+        /**
+         * Get a list of all categories with id, name, image
+         *
+         * @return array
+         */
+            function get_testimonials_list(): array
+            {
+                $testimonialModel = new TestimonialModel();
+        
+                // Fetch all testimonials
+                $testimonials = $testimonialModel->findAll();
+                
+                return $testimonials;
             }
         }
