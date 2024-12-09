@@ -21,6 +21,9 @@ class Frontend extends BaseController
     protected $topNav;
     protected $slideModel;
     protected $sliderModel;
+    protected $metaTitle;
+    protected $metaDescription;
+    protected $metaKeyword;
 
     public function __construct()
     {
@@ -43,6 +46,9 @@ class Frontend extends BaseController
 
         $this->slideModel = new SlideModel();
         $this->sliderModel = new SliderModel();
+        $this->metaTitle = 'welcome to farmix';
+        $this->metaDescription = 'welcome to farmix';
+        $this->metaKeyword = 'farmix';
     }
 
     /**
@@ -59,6 +65,10 @@ class Frontend extends BaseController
         
         $pagesModel = new PagesModel();
         $page = $pagesModel->where('slug', $slug)->first();
+
+        $this->metaTitle = !empty($page['title']) ? $page['title'] : 'welcome to farmix';
+        $this->metaDescription = !empty($page['meta_description']) ? $page['meta_description']:'welcome to farmix';
+        $this->metaKeyword = !empty($page['meta_keywords']) ? $page['meta_keywords']:'farmix';
         //var_dump($page);
         if (!$page) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Page not found: $slug");
@@ -69,7 +79,10 @@ class Frontend extends BaseController
             'title' => $page['title'],
             'widgets' => $widgets,
             'content' => $page['content'],
-            'topNav'=> $this->topNav
+            'topNav'=> $this->topNav,
+            'metaTitle' => $this->metaTitle,
+            'metaDescription' => $this->metaDescription,
+            'metaKeyword' => $this->metaKeyword
         ]);
     }
 
@@ -92,7 +105,10 @@ class Frontend extends BaseController
             'title' => 'Our Products',
             'products' => $products,
             'categories' => $categories,
-            'topNav'=> $this->topNav
+            'topNav'=> $this->topNav,
+            'metaTitle' => $this->metaTitle,
+            'metaDescription' => $this->metaDescription,
+            'metaKeyword' => $this->metaKeyword
         ]);
     }
 
@@ -112,7 +128,10 @@ class Frontend extends BaseController
             'title' => 'Our Products',
             'products' => $products,
             'category' => $category,
-            'topNav'=> $this->topNav
+            'topNav'=> $this->topNav,
+            'metaTitle' => $this->metaTitle,
+            'metaDescription' => $this->metaDescription,
+            'metaKeyword' => $this->metaKeyword
         ]);
     }
 
@@ -140,7 +159,10 @@ class Frontend extends BaseController
         return view("{$this->themePath}/product_details", [
             'title' => $product['name'],
             'product' => $product,
-            'topNav'=> $this->topNav
+            'topNav'=> $this->topNav,
+            'metaTitle' => $this->metaTitle,
+            'metaDescription' => $this->metaDescription,
+            'metaKeyword' => $this->metaKeyword
         ]);
     }
 

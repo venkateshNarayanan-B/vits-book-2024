@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Shared on THEMELOCK.COM - Farmix - Agriculture & Farming Food Template - Home Two</title>
+    <title><?= $title ?></title>
     <meta name="author" content="venkatesh narayanan">
-    <meta name="description" content="Farmix - Agriculture & Farming Food Template">
-    <meta name="keywords" content="Farmix - Agriculture & Farming Food Template">
+    <meta name="title" content="<?= $metaTitle ?>">
+    <meta name="description" content="<?= $metaDescription ?>">
+    <meta name="keywords" content="<?= $metaKeyword ?>">
     <meta name="robots" content="INDEX,FOLLOW">
 
     <!-- Mobile Specific Metas -->
