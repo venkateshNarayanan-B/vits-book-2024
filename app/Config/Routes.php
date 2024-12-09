@@ -102,6 +102,27 @@ $routes->group('vouchers', ['filter' => 'auth'], function ($routes) {
     $routes->get('delete-entry/(:num)', 'VoucherController::delete_entry/$1');
 });
 
+$routes->group('payment-vouchers', function ($routes) {
+    $routes->get('/', 'PaymentVoucherController::index'); // DataTables and list page
+    $routes->get('create', 'PaymentVoucherController::create'); // Create form
+    $routes->post('store', 'PaymentVoucherController::store'); // Store new voucher
+    $routes->get('edit/(:num)', 'PaymentVoucherController::edit/$1'); // Edit form
+    $routes->post('update/(:num)', 'PaymentVoucherController::update/$1'); // Update voucher
+    $routes->get('delete/(:num)', 'PaymentVoucherController::delete/$1'); // Delete voucher
+});
+
+// Routes for Receipt Vouchers
+$routes->group('receipt-vouchers', function ($routes) {
+    $routes->get('/', 'ReceiptVoucherController::index'); // List all receipt vouchers (DataTable)
+    $routes->get('create', 'ReceiptVoucherController::create'); // Show create form
+    $routes->post('store', 'ReceiptVoucherController::store'); // Handle create form submission
+    $routes->get('edit/(:num)', 'ReceiptVoucherController::edit/$1'); // Show edit form (ID-based)
+    $routes->post('update/(:num)', 'ReceiptVoucherController::update/$1'); // Handle edit form submission (ID-based)
+    $routes->get('delete/(:num)', 'ReceiptVoucherController::delete/$1'); // Handle deletion (ID-based)
+});
+
+
+
 
 $routes->group('categories', ['filter' => 'auth'], function ($routes) {
     $routes->get('/', 'CategoryController::index');
