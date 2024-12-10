@@ -116,6 +116,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?= site_url("contra-vouchers/") ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Contra List</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= site_url("categories") ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Item Categories List</p>

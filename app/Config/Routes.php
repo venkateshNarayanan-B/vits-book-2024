@@ -131,6 +131,14 @@ $routes->group('journal-vouchers', function ($routes) {
     $routes->get('delete/(:num)', 'JournalVoucherController::delete/$1'); // Delete journal voucher
 });
 
+$routes->group('contra-vouchers', function ($routes) {
+    $routes->get('/', 'ContraVoucherController::index'); // List all Contra Vouchers
+    $routes->get('create', 'ContraVoucherController::create'); // Show create form
+    $routes->post('store', 'ContraVoucherController::store'); // Store a new Contra Voucher
+    $routes->get('edit/(:num)', 'ContraVoucherController::edit/$1'); // Show edit form for a specific Contra Voucher
+    $routes->post('update/(:num)', 'ContraVoucherController::update/$1'); // Update a specific Contra Voucher
+    $routes->get('delete/(:num)', 'ContraVoucherController::delete/$1'); // Delete a specific Contra Voucher
+});
 
 
 
