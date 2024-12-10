@@ -110,6 +110,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?= site_url("journal-vouchers/") ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Journal List</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= site_url("categories") ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Item Categories List</p>

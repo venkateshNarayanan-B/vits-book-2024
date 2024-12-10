@@ -121,6 +121,17 @@ $routes->group('receipt-vouchers', function ($routes) {
     $routes->get('delete/(:num)', 'ReceiptVoucherController::delete/$1'); // Handle deletion (ID-based)
 });
 
+// Journal Voucher Routes
+$routes->group('journal-vouchers', function ($routes) {
+    $routes->get('/', 'JournalVoucherController::index'); // List all journal vouchers
+    $routes->get('create', 'JournalVoucherController::create'); // Show create form
+    $routes->post('store', 'JournalVoucherController::store'); // Store new journal voucher
+    $routes->get('edit/(:num)', 'JournalVoucherController::edit/$1'); // Edit journal voucher
+    $routes->post('update/(:num)', 'JournalVoucherController::update/$1'); // Update journal voucher
+    $routes->get('delete/(:num)', 'JournalVoucherController::delete/$1'); // Delete journal voucher
+});
+
+
 
 
 
