@@ -226,8 +226,13 @@ class AccountController extends BaseController
             if ($type === 'ledger') {
                 $row['group_name'] = $this->accountGroupModel->find($row['group_id'])['group_name'];
             }
-            $row['actions'] = '<button class="btn btn-info btn-sm edit-btn" data-id="' . $row['id'] . '">Edit</button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="' . $row['id'] . '">Delete</button>';
+             // Restrict actions for the first five primary groups
+            if ($type === 'group' && in_array($row['id'], [1, 2, 3, 4, 5])) {
+                $row['actions'] = '<span class="text-muted">N/A</span>';
+            } else {
+                $row['actions'] = '<button class="btn btn-info btn-sm edit-btn" data-id="' . $row['id'] . '">Edit</button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="' . $row['id'] . '">Delete</button>';
+            }
         }
 
         return $this->response->setJSON([
