@@ -32,7 +32,6 @@
                             <h3 class="card-title">Enter Item Details</h3>
                         </div>
                         <div class="card-body">
-                            <!-- Form to Add Item -->
                             <form action="<?= base_url('inventory/item/store') ?>" method="POST">
                                 <?= csrf_field() ?>
                                 <div class="row">
@@ -40,12 +39,8 @@
                                         <div class="form-group">
                                             <label for="item_name">Item Name <span class="text-danger">*</span></label>
                                             <input type="text" name="item_name" id="item_name" class="form-control" value="<?= old('item_name') ?>" required>
-                                            <?php if (isset($errors['item_name'])): ?>
-                                                <div class="text-danger"><?= $errors['item_name'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="category_id">Category <span class="text-danger">*</span></label>
@@ -57,90 +52,82 @@
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
-                                            <?php if (isset($errors['category_id'])): ?>
-                                                <div class="text-danger"><?= $errors['category_id'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="unit">Unit <span class="text-danger">*</span></label>
                                             <input type="text" name="unit" id="unit" class="form-control" value="<?= old('unit') ?>" required>
-                                            <?php if (isset($errors['unit'])): ?>
-                                                <div class="text-danger"><?= $errors['unit'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="hsn_code">HSN Code <span class="text-danger">*</span></label>
                                             <input type="text" name="hsn_code" id="hsn_code" class="form-control" value="<?= old('hsn_code') ?>" required>
-                                            <?php if (isset($errors['hsn_code'])): ?>
-                                                <div class="text-danger"><?= $errors['hsn_code'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tax_rate">Tax Rate (%) <span class="text-danger">*</span></label>
                                             <input type="number" name="tax_rate" id="tax_rate" class="form-control" value="<?= old('tax_rate') ?>" step="0.01" min="0" max="100" required>
-                                            <?php if (isset($errors['tax_rate'])): ?>
-                                                <div class="text-danger"><?= $errors['tax_rate'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="rate">Rate <span class="text-danger">*</span></label>
                                             <input type="text" name="rate" id="rate" class="form-control" value="<?= old('rate') ?>" required>
-                                            <?php if (isset($errors['rate'])): ?>
-                                                <div class="text-danger"><?= $errors['rate'] ?></div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="brand">Brand</label>
-                                            <input type="text" name="brand" id="brand" class="form-control" value="<?= old('brand') ?>" >
-                                            <?php if (isset($errors['brand'])): ?>
-                                                <div class="text-danger"><?= $errors['brand'] ?></div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="color">Color</label>
-                                            <input type="text" name="color" id="color" class="form-control" value="<?= old('color') ?>" >
-                                            <?php if (isset($errors['color'])): ?>
-                                                <div class="text-danger"><?= $errors['color'] ?></div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="size">Size</label>
-                                            <input type="text" name="size" id="size" class="form-control" value="<?= old('size') ?>" >
-                                            <?php if (isset($errors['size'])): ?>
-                                                <div class="text-danger"><?= $errors['size'] ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="opening_stock">Opening Stock</label>
-                                            <input type="text" name="opening_stock" id="opening_stock" class="form-control" value="<?= old('opening_stock') ?>" required>
-                                            <?php if (isset($errors['opening_stock'])): ?>
-                                                <div class="text-danger"><?= $errors['opening_stock'] ?></div>
-                                            <?php endif; ?>
+                                            <input type="number" name="opening_stock" id="opening_stock" class="form-control" value="<?= old('opening_stock') ?>">
                                         </div>
+                                    </div>
+
+                                    <!-- Optional Fields Section -->
+                                    <div class="col-md-12">
+                                        <h4 class="mt-3">Optional Fields</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="brand">Brand</label>
+                                            <input type="text" name="brand" id="brand" class="form-control" value="<?= old('brand') ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="color">Color</label>
+                                            <input type="text" name="color" id="color" class="form-control" value="<?= old('color') ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="size">Size</label>
+                                            <input type="text" name="size" id="size" class="form-control" value="<?= old('size') ?>">
+                                        </div>
+                                    </div>
+
+                                    <!-- Serial Numbers Section -->
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="requires_serial">Requires Serial Numbers</label>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="requires_serial" id="requires_serial" class="form-check-input">
+                                                <label class="form-check-label" for="requires_serial">Yes, this item requires serial numbers</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="serial-numbers-section" class="col-md-12" style="display: none;">
+                                        <label for="serial_numbers">Serial Numbers</label>
+                                        <div id="serial-numbers-wrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" name="serial_numbers[]" class="form-control" placeholder="Enter Serial Number">
+                                                <button type="button" class="btn btn-danger remove-serial-number">Remove</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="add-serial-number" class="btn btn-primary mt-2">Add Serial Number</button>
                                     </div>
                                 </div>
 
@@ -156,6 +143,29 @@
         </div>
     </section>
 </div>
+
+<script>
+    document.getElementById('requires_serial').addEventListener('change', function () {
+        const section = document.getElementById('serial-numbers-section');
+        section.style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('add-serial-number').addEventListener('click', function () {
+        const wrapper = document.getElementById('serial-numbers-wrapper');
+        wrapper.insertAdjacentHTML('beforeend', `
+            <div class="input-group mb-2">
+                <input type="text" name="serial_numbers[]" class="form-control" placeholder="Enter Serial Number">
+                <button type="button" class="btn btn-danger remove-serial-number">Remove</button>
+            </div>
+        `);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('remove-serial-number')) {
+            e.target.closest('.input-group').remove();
+        }
+    });
+</script>
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
