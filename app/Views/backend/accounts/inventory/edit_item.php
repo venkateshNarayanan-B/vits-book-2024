@@ -38,7 +38,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="item_name">Item Name</label>
+                                            <label for="item_name">Item Name <span class="text-danger">*</span></label>
                                             <input type="text" name="item_name" id="item_name" class="form-control" value="<?= old('item_name', esc($item['item_name'])) ?>" required>
                                             <?php if (isset($errors['item_name'])): ?>
                                                 <div class="text-danger"><?= $errors['item_name'] ?></div>
@@ -48,7 +48,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="category_id">Category</label>
+                                            <label for="category_id">Category <span class="text-danger">*</span></label>
                                             <select name="category_id" id="category_id" class="form-control select2" required>
                                                 <option value="">Select Category</option>
                                                 <?php foreach ($categories as $category): ?>
@@ -65,7 +65,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="unit">Unit</label>
+                                            <label for="unit">Unit <span class="text-danger">*</span></label>
                                             <input type="text" name="unit" id="unit" class="form-control" value="<?= old('unit', esc($item['unit'])) ?>" required>
                                             <?php if (isset($errors['unit'])): ?>
                                                 <div class="text-danger"><?= $errors['unit'] ?></div>
@@ -75,10 +75,60 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="rate">Rate</label>
+                                            <label for="hsn_code">HSN Code <span class="text-danger">*</span></label>
+                                            <input type="text" name="hsn_code" id="hsn_code" class="form-control" value="<?= old('hsn_code', esc($item['hsn_code'])) ?>" required>
+                                            <?php if (isset($errors['hsn_code'])): ?>
+                                                <div class="text-danger"><?= $errors['hsn_code'] ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tax_rate">Tax Rate (%) <span class="text-danger">*</span></label>
+                                            <input type="number" name="tax_rate" id="tax_rate" class="form-control" value="<?= old('tax_rate', esc($item['tax_rate'])) ?>" step="0.01" min="0" max="100" required>
+                                            <?php if (isset($errors['tax_rate'])): ?>
+                                                <div class="text-danger"><?= $errors['tax_rate'] ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rate">Rate <span class="text-danger">*</span></label>
                                             <input type="text" name="rate" id="rate" class="form-control" value="<?= old('rate', esc($item['rate'])) ?>" required>
                                             <?php if (isset($errors['rate'])): ?>
                                                 <div class="text-danger"><?= $errors['rate'] ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="brand">Brand</label>
+                                            <input type="text" name="brand" id="brand" class="form-control" value="<?= old('brand', esc($item['brand'])) ?>" >
+                                            <?php if (isset($errors['brand'])): ?>
+                                                <div class="text-danger"><?= $errors['brand'] ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="color">Color</label>
+                                            <input type="text" name="color" id="color" class="form-control" value="<?= old('color', esc($item['color'])) ?>" >
+                                            <?php if (isset($errors['color'])): ?>
+                                                <div class="text-danger"><?= $errors['color'] ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="size">Size</label>
+                                            <input type="text" name="size" id="size" class="form-control" value="<?= old('size', esc($item['size'])) ?>" >
+                                            <?php if (isset($errors['size'])): ?>
+                                                <div class="text-danger"><?= $errors['size'] ?></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>

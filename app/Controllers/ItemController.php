@@ -67,7 +67,9 @@ class ItemController extends BaseController
             'category_id' => 'required|integer|is_not_unique[stock_categories.id]',
             'unit' => 'required',
             'rate' => 'required|decimal',
-            'opening_stock' => 'required|decimal'
+            'opening_stock' => 'required|decimal',
+            'hsn_code' => 'required|max_length[10]', // Validation for HSN Code
+            'tax_rate' => 'required|decimal|greater_than_equal_to[0]|less_than_equal_to[100]', // Validation for Tax Rate
         ];
 
         if (!$this->validate($validationRules)) {
@@ -79,7 +81,12 @@ class ItemController extends BaseController
             'category_id' => $this->request->getPost('category_id'),
             'unit' => $this->request->getPost('unit'),
             'rate' => $this->request->getPost('rate'),
-            'opening_stock' => $this->request->getPost('opening_stock')
+            'opening_stock' => $this->request->getPost('opening_stock'),
+            'hsn_code' => $this->request->getPost('hsn_code'), // Add this line
+            'tax_rate' => $this->request->getPost('tax_rate'), // Add this line
+            'brand' => $this->request->getPost('brand'),
+            'color' => $this->request->getPost('color'),
+            'size' => $this->request->getPost('size'),
         ]);
 
         return redirect()->to('inventory/items')->with('swal_success', 'Item added successfully.');
@@ -117,7 +124,9 @@ class ItemController extends BaseController
             'category_id' => 'required|integer|is_not_unique[stock_categories.id]',
             'unit' => 'required',
             'rate' => 'required|decimal',
-            'opening_stock' => 'required|decimal'
+            'opening_stock' => 'required|decimal',
+            'hsn_code' => 'required|max_length[10]', // Validation for HSN Code
+            'tax_rate' => 'required|decimal|greater_than_equal_to[0]|less_than_equal_to[100]', // Validation for Tax Rate
         ];
 
         if (!$this->validate($validationRules)) {
@@ -129,7 +138,12 @@ class ItemController extends BaseController
             'category_id' => $this->request->getPost('category_id'),
             'unit' => $this->request->getPost('unit'),
             'rate' => $this->request->getPost('rate'),
-            'opening_stock' => $this->request->getPost('opening_stock')
+            'opening_stock' => $this->request->getPost('opening_stock'),
+            'hsn_code' => $this->request->getPost('hsn_code'), // Add this line
+            'tax_rate' => $this->request->getPost('tax_rate'), // Add this line
+            'brand' => $this->request->getPost('brand'),
+            'color' => $this->request->getPost('color'),
+            'size' => $this->request->getPost('size'),
         ]);
 
         return redirect()->to('inventory/items')->with('swal_success', 'Item updated successfully.');
