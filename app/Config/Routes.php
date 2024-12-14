@@ -164,6 +164,16 @@ $routes->group('inventory', ['filter' => 'auth'], function($routes) {
     $routes->get('item/delete/(:num)', 'ItemController::delete/$1');
 });
 
+$routes->group('inventory', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('units/', 'UnitController::index'); // List units (AJAX support)
+    $routes->get('units/create', 'UnitController::create'); // Add unit form
+    $routes->post('units/store', 'UnitController::store'); // Save new unit
+    $routes->get('units/edit/(:num)', 'UnitController::edit/$1'); // Edit unit form
+    $routes->post('units/update/(:num)', 'UnitController::update/$1'); // Update unit
+    $routes->get('units/delete/(:num)', 'UnitController::delete/$1'); // Delete unit
+});
+
+
 $routes->group('inventory', ['filter' => 'auth'], function ($routes) {
     // Inventory Transactions
     $routes->get('transactions', 'InventoryTransactionController::index'); // View list of transactions

@@ -4,25 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class StockItemModel extends Model
+class PurchaseVoucherModel extends Model
 {
-    protected $table            = 'stock_items';
+    protected $table            = 'purchase_details';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'item_name',
-        'category_id',
-        'unit',
-        'rate',
-        'opening_stock',
-        'hsn_code',
-        'tax_rate',
-        'brand',
-        'color',
-        'size',
+        'voucher_id',
+        'total_amount',
+        'tax_amount',
+        'discount_amount',
+        'net_amount',
         'created_at',
         'updated_at'
     ];
@@ -52,13 +47,4 @@ class StockItemModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    // Function to get stock items with category names
-    public function getItemsWithCategory()
-    {
-        // Perform a join with the stock_categories table
-        return $this->select('stock_items.id, stock_items.item_name, stock_categories.category_name, stock_items.primary_unit_id, stock_items.rate, stock_items.opening_stock')
-                    ->join('stock_categories', 'stock_categories.id = stock_items.category_id', 'left')
-                    ->findAll();
-    }
 }

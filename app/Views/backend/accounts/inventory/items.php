@@ -14,13 +14,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Stock Items</h1>
+                    <h1><?= esc($page_title) ?></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Inventory</a></li>
-                        <li class="breadcrumb-item active">Stock Items</li>
+                        <li class="breadcrumb-item active"><?= esc($title) ?></li>
                     </ol>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title">Stock Items List</h3>
+                            <h3 class="card-title"><?= esc($title) ?></h3>
                             <a href="<?= base_url('inventory/item/create') ?>" class="btn btn-primary btn-sm ml-auto">
                                 <i class="fas fa-plus"></i> Add New Item
                             </a>
@@ -76,7 +76,6 @@
 <script src="<?= base_url("assets") ?>/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= base_url("assets") ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url("assets") ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?= base_url("assets") ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="<?= base_url("assets") ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="<?= base_url("assets") ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?= base_url("assets") ?>/plugins/jszip/jszip.min.js"></script>
@@ -90,7 +89,7 @@
     $(document).ready(function() {
         $('#itemsTable').DataTable({
             paging: true,
-            lengthChange: false,
+            lengthChange: true,
             ordering: true,
             info: true,
             autoWidth: false,
@@ -102,16 +101,15 @@
                 type: "GET"
             },
             columns: [
-                { "data": 0 }, // ID
-                { "data": 1 }, // Item Name
-                { "data": 2 }, // Category
-                { "data": 3 }, // Unit
-                { "data": 4 }, // Rate
-                { "data": 5 }, // Opening Stock
-                
+                { "data": 0 }, // Item Name
+                { "data": 1 }, // Category
+                { "data": 2 }, // Unit
+                { "data": 3 }, // Rate
+                { "data": 4 }, // Opening Stock
+                { "data": 5 }, // Actions
             ],
             columnDefs: [
-                { "orderable": false, "targets": 5 }
+                { "orderable": false, "targets": 5 } // Disable sorting on Actions column
             ]
         });
     });

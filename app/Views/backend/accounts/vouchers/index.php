@@ -2,62 +2,63 @@
 
 <?= $this->section("content") ?>
 <div class="content-wrapper">
-    <section class="content-header">
-        <h1><?= esc($page_title) ?></h1>
-    </section>
-
-    <section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title"><?= esc($page_title) ?></h3>
-                    </div>
-
-                    <!-- Flash Message for Success -->
-                    <?php if (session()->getFlashdata('swal_success')): ?>
-                        <div class="alert alert-success">
-                            <?= session()->getFlashdata('swal_success') ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="card-body">
-                        <a href="<?= site_url('vouchers/create') ?>" class="btn btn-info mb-3">Create New Voucher</a>
-
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Voucher Type</th>
-                                    <th>Reference No</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (empty($vouchers)): ?>
-                                    <tr>
-                                        <td colspan="4">No vouchers found</td>
-                                    </tr>
-                                <?php else: ?>
-                                    <?php foreach ($vouchers as $voucher): ?>
-                                    <tr>
-                                        <td><?= esc($voucher['date']) ?></td>
-                                        <td><?= esc($voucher['voucher_type']) ?></td>
-                                        <td><?= esc($voucher['reference_no']) ?></td>
-                                        <td>
-                                            <a href="<?= site_url('vouchers/entry/' . $voucher['id']) ?>" class="btn btn-success btn-sm">View Entry</a>
-                                            <a href="<?= site_url('vouchers/edit/' . $voucher['id']) ?>" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="<?= site_url('vouchers/delete/' . $voucher['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Vouchers</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Accounts</a></li>
+                        <li class="breadcrumb-item active">Vouchers</li>
+                    </ol>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h5>Vouchers</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 col-md-3 mb-3">
+                                    <a class="btn btn-app bg-success w-100 text-center">
+                                        <i class="fas fa-credit-card"></i> Payment
+                                    </a>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <a class="btn btn-app bg-danger w-100 text-center">
+                                        <i class="fas fa-receipt"></i> Receipt
+                                    </a>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <a class="btn btn-app bg-info w-100 text-center">
+                                        <i class="fas fa-pause"></i> Journal
+                                    </a>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <a class="btn btn-app bg-warning w-100 text-center">
+                                        <i class="fas fa-landmark"></i> Contra
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
 </div>
 <?= $this->endSection() ?>

@@ -6,18 +6,21 @@ use App\Controllers\BaseController;
 use App\Models\StockItemModel;
 use App\Models\StockCategoryModel;
 use App\Models\StockItemSerialNumberModel;
+use App\Models\UnitModel;
 
 class ItemController extends BaseController
 {
     protected $itemModel;
     protected $categoryModel;
     protected $serialNumberModel;
+    protected $unitModel;
 
     public function __construct()
     {
         $this->itemModel = new StockItemModel();
         $this->categoryModel = new StockCategoryModel();
         $this->serialNumberModel = new StockItemSerialNumberModel();
+        $this->unitModel = new UnitModel();
     }
 
     public function index()
@@ -34,15 +37,22 @@ class ItemController extends BaseController
     public function fetchItems()
     {
         $items = $this->itemModel->getItemsWithCategory();
+        $units = $this->unitModel->findAll();
         $data = [];
+
+        // Map units by ID
+        $unitMap = [];
+        foreach ($units as $unit) {
+            $unitMap[$unit['id']] = $unit['unit_name'];
+        }
 
         foreach ($items as $item) {
             $data[] = [
                 esc($item['item_name']),
-                esc($item['category_name']),
-                esc($item['unit']),
-                esc($item['rate']),
-                esc($item['opening_stock']),
+                esc($item['category_name'] ?? 'Unknown Category'),
+                esc($unitMap[$item['primary_unit_id']] ?? 'Unknown Unit'),
+                esc(number_format($item['rate'], 2)), // Format rate
+                esc(number_format($item['opening_stock'], 2)), // Format opening stock
                 '<a href="' . base_url('inventory/item/edit/' . $item['id']) . '" class="btn btn-primary btn-sm">Edit</a>' .
                 ' <a href="' . base_url('inventory/item/delete/' . $item['id']) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this item?\')">Delete</a>'
             ];
@@ -57,7 +67,8 @@ class ItemController extends BaseController
             'categories' => $this->categoryModel->findAll(),
             'title' => 'Add Item',
             'page_title' => 'Add New Item',
-            'menu' => 'accounts'
+            'menu' => 'accounts',
+            'units' => $this->unitModel->findAll(),
         ];
 
         return view('backend/accounts/inventory/add_item', $data);
@@ -68,7 +79,7 @@ class ItemController extends BaseController
         $rules = [
             'item_name' => 'required',
             'category_id' => 'required',
-            'unit' => 'required',
+            'primary_unit_id' => 'required|integer',
             'hsn_code' => 'required',
             'tax_rate' => 'required|decimal',
             'rate' => 'required|decimal',
@@ -82,7 +93,7 @@ class ItemController extends BaseController
         $data = [
             'item_name' => $this->request->getPost('item_name'),
             'category_id' => $this->request->getPost('category_id'),
-            'unit' => $this->request->getPost('unit'),
+            'primary_unit_id' => $this->request->getPost('primary_unit_id'),
             'hsn_code' => $this->request->getPost('hsn_code'),
             'tax_rate' => $this->request->getPost('tax_rate'),
             'rate' => $this->request->getPost('rate'),
@@ -124,6 +135,7 @@ class ItemController extends BaseController
         $data = [
             'item' => $item,
             'categories' => $this->categoryModel->findAll(),
+            'units' => $this->unitModel->findAll(),
             'serial_numbers' => $serialNumbers,
             'title' => 'Edit Item',
             'page_title' => 'Edit Item',
@@ -138,7 +150,7 @@ class ItemController extends BaseController
         $rules = [
             'item_name' => 'required',
             'category_id' => 'required',
-            'unit' => 'required',
+            'primary_unit_id' => 'required|integer',
             'hsn_code' => 'required',
             'tax_rate' => 'required|decimal',
             'rate' => 'required|decimal',
@@ -152,7 +164,7 @@ class ItemController extends BaseController
         $data = [
             'item_name' => $this->request->getPost('item_name'),
             'category_id' => $this->request->getPost('category_id'),
-            'unit' => $this->request->getPost('unit'),
+            'primary_unit_id' => $this->request->getPost('primary_unit_id'),
             'hsn_code' => $this->request->getPost('hsn_code'),
             'tax_rate' => $this->request->getPost('tax_rate'),
             'rate' => $this->request->getPost('rate'),

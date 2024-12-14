@@ -57,9 +57,17 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="unit">Unit <span class="text-danger">*</span></label>
-                                            <input type="text" name="unit" id="unit" class="form-control" value="<?= old('unit', esc($item['unit'])) ?>" required>
+                                            <label for="primary_unit_id">Primary Unit</label>
+                                            <select name="primary_unit_id" id="primary_unit_id" class="form-control select2" required>
+                                                <option value="">-- Select Unit --</option>
+                                                <?php foreach ($units as $unit): ?>
+                                                    <option value="<?= esc($unit['id']) ?>" <?= isset($item) && $item['primary_unit_id'] == $unit['id'] ? 'selected' : '' ?>>
+                                                        <?= esc($unit['unit_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
+
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
