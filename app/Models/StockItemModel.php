@@ -24,7 +24,8 @@ class StockItemModel extends Model
         'color',
         'size',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'primary_unit_id'
     ];
 
     protected bool $allowEmptyInserts = false;

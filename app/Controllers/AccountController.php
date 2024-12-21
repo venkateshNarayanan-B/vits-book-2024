@@ -227,7 +227,7 @@ class AccountController extends BaseController
                 $row['group_name'] = $this->accountGroupModel->find($row['group_id'])['group_name'];
             }
              // Restrict actions for the first five primary groups
-            if ($type === 'group' && in_array($row['id'], [1, 2, 3, 4, 5])) {
+            if ($type === 'group' && in_array($row['id'], [1, 2, 3, 4, 5, 6, 7, 8, 9])) {
                 $row['actions'] = '<span class="text-muted">N/A</span>';
             } else {
                 $row['actions'] = '<button class="btn btn-info btn-sm edit-btn" data-id="' . $row['id'] . '">Edit</button>

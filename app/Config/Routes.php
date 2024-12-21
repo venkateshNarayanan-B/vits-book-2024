@@ -164,6 +164,7 @@ $routes->group('inventory', ['filter' => 'auth'], function($routes) {
     $routes->get('item/delete/(:num)', 'ItemController::delete/$1');
 });
 
+// units routes
 $routes->group('inventory', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('units/', 'UnitController::index'); // List units (AJAX support)
     $routes->get('units/create', 'UnitController::create'); // Add unit form
@@ -171,6 +172,33 @@ $routes->group('inventory', ['namespace' => 'App\Controllers'], function ($route
     $routes->get('units/edit/(:num)', 'UnitController::edit/$1'); // Edit unit form
     $routes->post('units/update/(:num)', 'UnitController::update/$1'); // Update unit
     $routes->get('units/delete/(:num)', 'UnitController::delete/$1'); // Delete unit
+});
+
+// Purchase Voucher Routes
+$routes->group('inventory', ['namespace' => 'App\Controllers'], function ($routes) {
+    // List all purchase vouchers with DataTable integration
+    $routes->get('purchase-vouchers/', 'PurchaseVoucherController::index');
+
+    // Show form to create a new purchase voucher
+    $routes->get('purchase-vouchers/create', 'PurchaseVoucherController::create');
+
+    // Save a new purchase voucher
+    $routes->post('purchase-vouchers/store', 'PurchaseVoucherController::store');
+
+    // Edit a purchase voucher by ID
+    $routes->get('purchase-vouchers/edit/(:num)', 'PurchaseVoucherController::edit/$1');
+
+    // Update a purchase voucher by ID
+    $routes->post('purchase-vouchers/update/(:num)', 'PurchaseVoucherController::update/$1');
+
+    // Delete a purchase voucher by ID
+    $routes->get('purchase-vouchers/delete/(:num)', 'PurchaseVoucherController::delete/$1');
+
+    // Fetch stock item details via AJAX (used for item selection in modal)
+    $routes->post('purchase-vouchers/item-details', 'PurchaseVoucherController::getItemDetails');
+
+    // Manage serial numbers for an item in the purchase voucher (Add/View/Delete)
+    $routes->post('purchase-vouchers/manage-serial-numbers', 'PurchaseVoucherController::manageSerialNumbers');
 });
 
 
