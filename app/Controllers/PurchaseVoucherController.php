@@ -212,6 +212,27 @@ class PurchaseVoucherController extends BaseController
 
     public function store()
     {
+        // Retrieve all input data
+        $data = $this->request->getPost();
+
+        // Debugging: Check serial_numbers for each item
+        foreach ($data['items'] as $key => $item) {
+            if (isset($item['serial_numbers'])) {
+                $data['items'][$key]['serial_numbers_debug'] = $item['serial_numbers'];
+            } else {
+                $data['items'][$key]['serial_numbers_debug'] = 'No serial numbers received';
+            }
+        }
+
+        // Return JSON response
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data' => $data,
+        ]);
+    }
+
+    public function store_ex()
+    {
         // Retrieve input data
         $data = $this->request->getPost();
 

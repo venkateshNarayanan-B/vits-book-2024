@@ -14,7 +14,7 @@
                         <h3 class="card-title">Add New Purchase Voucher</h3>
                     </div>
 
-                    <form action="<?= site_url('inventory/purchase-vouchers/store') ?>" method="post" id="purchaseVoucherForm">
+                    <form action="<?= site_url('inventory/purchase-vouchers/store') ?>" method="post" id="purchaseVoucherForm" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
                             <!-- Voucher Details Section -->
@@ -328,6 +328,7 @@
 <?= $this->section("scripts") ?>
 <!-- Select2 Initialization -->
 <script>
+    let serialData = {}; // Global object to store serial numbers for each item row
     $(document).ready(function () {
         // Fix for Select2 inside Bootstrap Modals
         $.fn.modal.Constructor.prototype._enforceFocus = function() {};
@@ -402,6 +403,7 @@
 
         //item displayed to item table
         let itemIndex = 0; // Keeps track of row indexes to avoid conflicts
+        
 
         $('#saveItem').on('click', function () {
             // Fetch values from the modal
@@ -590,7 +592,7 @@
 
 
         //serial number management section
-        let serialData = {}; // Object to store serial numbers for each item row
+        
 
         // Open Serial Management Modal
         $(document).on('click', '.serialItem', function () {
@@ -637,6 +639,9 @@
             // Save serial numbers
             serialData[index] = serialNumbers;
 
+            // Debugging: Check if serial numbers are correctly saved
+            console.log(`Serial Data for Row ${index}:`, serialData[index]);
+
             // Update Serial Button (visual indication)
             $(`#itemRow_${index} .serialItem`).removeClass('btn-info').addClass('btn-success');
 
@@ -660,29 +665,7 @@
             }
         });
 
-        // Function to update summary dynamically
-        function updateSummary() {
-            let subtotal = 0, totalTaxes = 0, totalDiscounts = 0;
-
-            // Loop through each row to recalculate totals
-            $('#itemsTableBody tr').each(function () {
-                let row = $(this);
-                let amount = parseFloat(row.find('td:nth-child(7)').text()) || 0; // Total column
-                let tax = parseFloat(row.find('td:nth-child(5)').text().replace('%', '')) || 0;
-                let discount = parseFloat(row.find('td:nth-child(6)').text()) || 0;
-
-                subtotal += amount;
-                totalTaxes += (amount * tax) / 100;
-                totalDiscounts += discount;
-            });
-
-            // Update summary fields
-            $('#subtotal').val(subtotal.toFixed(2));
-            $('#total_taxes').val(totalTaxes.toFixed(2));
-            $('#total_discounts').val(totalDiscounts.toFixed(2));
-            let grandTotal = subtotal + totalTaxes - totalDiscounts;
-            $('#grand_total').val(grandTotal.toFixed(2));
-        }
+        
 
        //expenses section
         let expenseIndex = 0;
@@ -710,7 +693,7 @@
 
             // Append expense row to the table
             $('#expensesTableBody').append(`
-                <tr id="expenseRow_${expenseIndex}">
+                <tr id="expenseRow_${expenseIndex}" data-ledger-id="${expenseLedgerId}">
                     <td data-ledger-id="${expenseLedgerId}">${expenseLedger}</td>
                     <td>${expenseAmount.toFixed(2)}</td>
                     <td>${expenseTax}%</td>
@@ -744,32 +727,32 @@
         function updateSummary() {
             let subtotal = 0, totalTaxes = 0, totalDiscounts = 0, totalExpenses = 0;
 
-            // Recalculate Items Table
+            // Calculate totals from Items Table
             $('#itemsTableBody tr').each(function () {
                 let row = $(this);
 
-                let amount = parseFloat(row.find('td:nth-child(7)').text()) || 0; // Amount column (excluding tax)
-                let taxRate = parseFloat(row.find('td:nth-child(5)').text().replace('%', '')) || 0; // Tax rate percentage
+                let amount = parseFloat(row.find('td:nth-child(7)').text()) || 0; // Total column
+                let taxRate = parseFloat(row.find('td:nth-child(5)').text().replace('%', '')) || 0; // Tax percentage
                 let discount = parseFloat(row.find('td:nth-child(6)').text()) || 0; // Discount column
 
-                subtotal += amount; // Base amount (before tax)
-                totalTaxes += (amount * taxRate) / 100; // Calculate tax based on the amount
-                totalDiscounts += discount; // Accumulate item-level discounts
+                subtotal += amount; // Add to subtotal
+                totalTaxes += (amount * taxRate) / 100; // Calculate tax
+                totalDiscounts += discount; // Add discount
             });
 
-            // Recalculate Expenses Table
+            // Calculate totals from Expenses Table
             $('#expensesTableBody tr').each(function () {
                 let row = $(this);
 
                 let expenseAmount = parseFloat(row.find('td:nth-child(2)').text()) || 0; // Expense Amount
-                let expenseTaxRate = parseFloat(row.find('td:nth-child(3)').text().replace('%', '')) || 0; // Expense Tax rate
+                let expenseTaxRate = parseFloat(row.find('td:nth-child(3)').text().replace('%', '')) || 0; // Tax percentage
 
                 let expenseTax = (expenseAmount * expenseTaxRate) / 100; // Calculate tax on expense
                 totalExpenses += (expenseAmount + expenseTax); // Add expense amount with tax
                 totalTaxes += expenseTax; // Add expense tax to total taxes
             });
 
-            // Voucher-Level Discount
+            // Include Voucher-Level Discount
             let voucherDiscount = parseFloat($('#voucher_discount').val()) || 0;
 
             // Total Discounts (Item-Level + Voucher-Level)
@@ -789,6 +772,7 @@
 
             $('#grand_total').val(grandTotal.toFixed(2)); // Grand Total
         }
+
 
 
 
@@ -821,6 +805,7 @@
 
 <script>
     (function () {
+        
         // Form Submission Event
         $('#purchaseVoucherForm').on('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
@@ -889,7 +874,6 @@
             }
         });
 
-        // Collect Dynamic Data from Items and Expenses
         function collectDynamicDataAndSubmit(submitButton) {
             // Prepare form data
             let formData = new FormData($('#purchaseVoucherForm')[0]);
@@ -903,6 +887,10 @@
                 let discount = $(row).find('td:nth-child(6)').text(); // Discount Column
                 let total = $(row).find('td:nth-child(7)').text(); // Total Column
 
+                // Serial Numbers
+                // Log the current state of serialData
+                console.log(`Serial Data for Row in form submit ${index}:`, serialData[index]);
+
                 // Append each item's data to the form
                 formData.append(`items[${index}][item_id]`, itemId);
                 formData.append(`items[${index}][quantity]`, quantity);
@@ -910,23 +898,49 @@
                 formData.append(`items[${index}][tax]`, tax);
                 formData.append(`items[${index}][discount]`, discount);
                 formData.append(`items[${index}][total]`, total);
+
+                // Append serial numbers if they exist
+                // Append serial numbers if they exist
+                if (serialData[index] && serialData[index].length > 0) {
+                    serialData[index].forEach((serial, serialIndex) => {
+                        formData.append(`items[${index}][serial_numbers][${serialIndex}]`, serial);
+                    });
+                } else {
+                    // Add a placeholder if no serial numbers are present
+                    formData.append(`items[${index}][serial_numbers]`, '');
+                }
+
+                 // Log formData after appending serial numbers
+                 console.log(`FormData After Adding Serial Numbers for Row ${index}:`, [...formData.entries()]);
             });
 
             // Collect Expenses Data
             $('#expensesTableBody tr').each(function (index, row) {
                 let ledgerId = $(row).data('ledger-id');
-                let amount = $(row).find('td:nth-child(2)').text(); // Amount Column
-                let tax = $(row).find('td:nth-child(3)').text().replace('%', ''); // Tax Column
+                let amount = parseFloat($(row).find('td:nth-child(2)').text()) || 0;
+                let tax = parseFloat($(row).find('td:nth-child(3)').text().replace('%', '')) || 0;
 
-                // Append each expense's data to the form
+                if (amount < 0 || tax < 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: `Expense row ${index + 1} has invalid values. Amount and Tax cannot be negative.`,
+                    });
+                    return false; // Stop processing
+                }
+
                 formData.append(`expenses[${index}][ledger_id]`, ledgerId);
-                formData.append(`expenses[${index}][amount]`, amount);
-                formData.append(`expenses[${index}][tax]`, tax);
+                formData.append(`expenses[${index}][amount]`, amount.toFixed(2));
+                formData.append(`expenses[${index}][tax]`, tax.toFixed(2));
             });
 
-            // Submit form using AJAX
+            // Final Debugging Log
+            console.log("Final FormData before submission:", [...formData.entries()]);
+
+            // Submit the form using AJAX
             submitForm(formData, submitButton);
         }
+
 
         // Submit Form via AJAX
         function submitForm(formData, submitButton) {
@@ -947,13 +961,16 @@
                     });
                 },
                 success: function (response) {
+                    // Log the response for debugging
+                    console.log("Server Response:", response);
+
                     // Handle success (e.g., redirect or show success message)
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
                         text: 'Purchase Voucher saved successfully!',
-                    }).then(() => {
-                        window.location.href = '<?= site_url('inventory/purchase-vouchers') ?>';
+                    //}).then(() => {
+                       // window.location.href = '<?= site_url('inventory/purchase-vouchers') ?>';
                     });
                 },
                 error: function (xhr) {
